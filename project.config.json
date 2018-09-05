@@ -1,0 +1,13 @@
+{
+  "description": "app",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wx3015c7c9331853c4",
+  "projectname": "larabbs-app",
+  "miniprogramRoot": "./dist"
+}
