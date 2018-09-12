@@ -1,1 +1,0 @@
-<a href="/users/".$uid[0]. title= $username>@.$username</a>

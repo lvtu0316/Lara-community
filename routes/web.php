@@ -49,3 +49,9 @@ Route::resource('notifications', 'NotificationsController', ['only' => ['index']
 Route::get('users_json','UsersController@usersJson')->name('users.json');
 
 Route::get('cache_at','UsersController@cacheAt')->name('users.cache.at');
+
+# ------------------ User Topic Actions ------------------------
+
+Route::group(['before' => 'auth'], function () {
+    Route::post('/topics/{id}/upvote', 'TopicsController@upvote')->name('topics.upvote');
+});

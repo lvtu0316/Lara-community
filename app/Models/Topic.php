@@ -3,11 +3,16 @@
 namespace App\Models;
 use Laravel\Scout\Searchable;
 use App\Libraries\EsSearchable;
+use Cog\Contracts\Love\Likeable\Models\Likeable as LikeableContract;
+use Cog\Laravel\Love\Likeable\Models\Traits\Likeable;
+use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+
+class Topic extends Model implements LikeableContract
 {
     use Searchable;
     use EsSearchable;
+    use Likeable;
 
     public function searchableAs()
     {

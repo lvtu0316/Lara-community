@@ -103,6 +103,8 @@ return array(
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'DebugBar\\' => array($vendorDir . '/maximebf/debugbar/src/DebugBar'),
     'Cron\\' => array($vendorDir . '/mtdowling/cron-expression/src/Cron'),
+    'Cog\\Laravel\\Love\\' => array($vendorDir . '/cybercog/laravel-love/src'),
+    'Cog\\Contracts\\Love\\' => array($vendorDir . '/cybercog/laravel-love/contracts'),
     'Cake\\Chronos\\' => array($vendorDir . '/cakephp/chronos/src'),
     'Barryvdh\\Debugbar\\' => array($vendorDir . '/barryvdh/laravel-debugbar/src'),
     'App\\' => array($baseDir . '/app'),

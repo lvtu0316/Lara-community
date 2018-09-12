@@ -42,8 +42,9 @@ class TopicsController extends Controller
         if ( ! empty($topic->slug) && $topic->slug != $request->slug) {
             return redirect($topic->link(),301);
         }
-
-        return view('topics.show', compact('topic'));
+        $likesCount = $topic->likesCount;
+        $likers = $topic->collectLikers();
+        return view('topics.show', compact(['topic','likesCount','likers']));
     }
 
 	public function create(Topic $topic)
@@ -104,4 +105,24 @@ class TopicsController extends Controller
         }
         return $data;
     }
+
+    /*
+     * 点赞
+     */
+
+    public function upvote($id)
+    {
+
+        $user = Auth::user();
+
+        $topic = Topic::find($id);
+        if ($user->hasLiked($topic))
+        {
+            $user->unlike($topic);
+        }else{
+            $user->like($topic);
+        }
+        return response(['status' => 200]);
+    }
+
 }

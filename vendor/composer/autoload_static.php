@@ -194,6 +194,8 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
         'C' => 
         array (
             'Cron\\' => 5,
+            'Cog\\Laravel\\Love\\' => 17,
+            'Cog\\Contracts\\Love\\' => 19,
             'Cake\\Chronos\\' => 13,
         ),
         'B' => 
@@ -597,6 +599,14 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
         array (
             0 => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron',
         ),
+        'Cog\\Laravel\\Love\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-love/src',
+        ),
+        'Cog\\Contracts\\Love\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-love/contracts',
+        ),
         'Cake\\Chronos\\' => 
         array (
             0 => __DIR__ . '/..' . '/cakephp/chronos/src',
@@ -636,6 +646,13 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
             'Mockery' => 
             array (
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
+            ),
+        ),
+        'L' => 
+        array (
+            'Laracasts\\Presenter' => 
+            array (
+                0 => __DIR__ . '/..' . '/laracasts/presenter/src',
             ),
         ),
         'J' => 
@@ -778,9 +795,11 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
         'App\\Policies\\ReplyPolicy' => __DIR__ . '/../..' . '/app/Policies/ReplyPolicy.php',
         'App\\Policies\\TopicPolicy' => __DIR__ . '/../..' . '/app/Policies/TopicPolicy.php',
         'App\\Policies\\UserPolicy' => __DIR__ . '/../..' . '/app/Policies/UserPolicy.php',
+        'App\\Presenters\\UserPresenter' => __DIR__ . '/../..' . '/app/Presenters/UserPresenter.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
+        'App\\Providers\\ComposerServiceProvider' => __DIR__ . '/../..' . '/app/Providers/ComposerServiceProvider.php',
         'App\\Providers\\EasySmsServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EasySmsServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\JpushServiceProvider' => __DIR__ . '/../..' . '/app/Providers/JpushServiceProvider.php',
@@ -855,6 +874,28 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
         'Carbon\\CarbonPeriod' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonPeriod.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
+        'Cog\\Contracts\\Love\\LikeCounter\\Models\\LikeCounter' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/LikeCounter/Models/LikeCounter.php',
+        'Cog\\Contracts\\Love\\Like\\Exceptions\\InvalidLikeType' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Like/Exceptions/InvalidLikeType.php',
+        'Cog\\Contracts\\Love\\Like\\Models\\Like' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Like/Models/Like.php',
+        'Cog\\Contracts\\Love\\Likeable\\Exceptions\\InvalidLikeable' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Likeable/Exceptions/InvalidLikeable.php',
+        'Cog\\Contracts\\Love\\Likeable\\Models\\Likeable' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Likeable/Models/Likeable.php',
+        'Cog\\Contracts\\Love\\Likeable\\Services\\LikeableService' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Likeable/Services/LikeableService.php',
+        'Cog\\Contracts\\Love\\Liker\\Exceptions\\InvalidLiker' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Liker/Exceptions/InvalidLiker.php',
+        'Cog\\Contracts\\Love\\Liker\\Models\\Liker' => __DIR__ . '/..' . '/cybercog/laravel-love/contracts/Liker/Models/Liker.php',
+        'Cog\\Laravel\\Love\\Console\\Commands\\Recount' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Console/Commands/Recount.php',
+        'Cog\\Laravel\\Love\\LikeCounter\\Models\\LikeCounter' => __DIR__ . '/..' . '/cybercog/laravel-love/src/LikeCounter/Models/LikeCounter.php',
+        'Cog\\Laravel\\Love\\Like\\Enums\\LikeType' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Like/Enums/LikeType.php',
+        'Cog\\Laravel\\Love\\Like\\Models\\Like' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Like/Models/Like.php',
+        'Cog\\Laravel\\Love\\Like\\Observers\\LikeObserver' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Like/Observers/LikeObserver.php',
+        'Cog\\Laravel\\Love\\Likeable\\Events\\LikeableWasDisliked' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Events/LikeableWasDisliked.php',
+        'Cog\\Laravel\\Love\\Likeable\\Events\\LikeableWasLiked' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Events/LikeableWasLiked.php',
+        'Cog\\Laravel\\Love\\Likeable\\Events\\LikeableWasUndisliked' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Events/LikeableWasUndisliked.php',
+        'Cog\\Laravel\\Love\\Likeable\\Events\\LikeableWasUnliked' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Events/LikeableWasUnliked.php',
+        'Cog\\Laravel\\Love\\Likeable\\Models\\Traits\\Likeable' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Models/Traits/Likeable.php',
+        'Cog\\Laravel\\Love\\Likeable\\Observers\\LikeableObserver' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Observers/LikeableObserver.php',
+        'Cog\\Laravel\\Love\\Likeable\\Services\\LikeableService' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Likeable/Services/LikeableService.php',
+        'Cog\\Laravel\\Love\\Liker\\Models\\Traits\\Liker' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Liker/Models/Traits/Liker.php',
+        'Cog\\Laravel\\Love\\Providers\\LoveServiceProvider' => __DIR__ . '/..' . '/cybercog/laravel-love/src/Providers/LoveServiceProvider.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/CronExpression.php',
         'Cron\\DayOfMonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/DayOfMonthField.php',
@@ -3752,6 +3793,10 @@ class ComposerStaticInit373dfdf029a4eccf57e12744ab563c69
         'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
         'JsonSerializable' => __DIR__ . '/..' . '/nesbot/carbon/src/JsonSerializable.php',
+        'Laracasts\\Presenter\\Contracts\\PresentableInterface' => __DIR__ . '/..' . '/laracasts/presenter/src/Laracasts/Presenter/Contracts/PresentableInterface.php',
+        'Laracasts\\Presenter\\Exceptions\\PresenterException' => __DIR__ . '/..' . '/laracasts/presenter/src/Laracasts/Presenter/Exceptions/PresenterException.php',
+        'Laracasts\\Presenter\\PresentableTrait' => __DIR__ . '/..' . '/laracasts/presenter/src/Laracasts/Presenter/PresentableTrait.php',
+        'Laracasts\\Presenter\\Presenter' => __DIR__ . '/..' . '/laracasts/presenter/src/Laracasts/Presenter/Presenter.php',
         'Laravel\\Horizon\\AutoScaler' => __DIR__ . '/..' . '/laravel/horizon/src/AutoScaler.php',
         'Laravel\\Horizon\\BackgroundProcess' => __DIR__ . '/..' . '/laravel/horizon/src/BackgroundProcess.php',
         'Laravel\\Horizon\\Connectors\\RedisConnector' => __DIR__ . '/..' . '/laravel/horizon/src/Connectors/RedisConnector.php',

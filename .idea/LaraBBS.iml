@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/caouecs/laravel-lang" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ckeditor/ckeditor" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cybercog/laravel-love" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/defuse/php-encryption" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/dingo/api" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/dingo/blueprint" />
@@ -43,6 +44,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-highlighter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jpush/jpush" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laracasts/presenter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/framework" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/horizon" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/passport" />

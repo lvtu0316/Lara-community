@@ -5,14 +5,22 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Laracasts\Presenter\PresentableTrait;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Laravel\Scout\Searchable;
+use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
+use Cog\Laravel\Love\Liker\Models\Traits\Liker;
 
-class User extends Authenticatable implements JWTSubject
+
+class User extends Authenticatable implements JWTSubject, LikerContract
 {
     use Traits\ActiveUserHelper;
     use Traits\LastActivedAtHelper;
+    use Liker;
+
+    use PresentableTrait;
+    protected $presenter = 'App\Presenters\UserPresenter';
 //    use Searchable;
 
 //    public function searchableAs()

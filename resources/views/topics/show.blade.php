@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/js/jquery.caret.min.js"></script>
     <script type="text/javascript" src="/js/jquery.atwho.js"></script>
     <script type="text/javascript" src="/js/at.peron.js"></script>
+    <script type="text/javascript" src="/js/vote.js"></script>
 @endsection
 
 @section('content')
@@ -46,7 +47,10 @@
                         ⋅
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                         {{ $topic->reply_count }}
+                        ⋅
+                        <i class="fa fa-thumbs-o-up"></i> {{$likesCount}}
                     </div>
+
 
                     <div class="topic-body">
                         {!! $topic->body !!}
@@ -63,6 +67,10 @@
                     </div>
                     @endcan
                 </div>
+            </div>
+            {{--点赞--}}
+            <div class="votes-container panel panel-default padding-md">
+                @include('topics._like')
             </div>
             {{-- 用户回复列表 --}}
             <div class="panel panel-default topic-reply">
