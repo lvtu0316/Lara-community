@@ -43,12 +43,16 @@
                     <ul class="nav nav-tabs">
                         <li class="{{ active_class(if_query('tab', null)) }}"><a href="{{ route('users.show', $user->id) }}">Ta 的话题</a></li>
                         <li class="{{ active_class(if_query('tab', 'replies')) }}"><a href="{{ route('users.show', [$user->id, 'tab' => 'replies']) }}">Ta 的回复</a></li>
+                        <li class="{{ active_class(if_query('tab', 'likes')) }}"><a href="{{ route('users.show', [$user->id, 'tab' => 'likes']) }}">Ta 赞过的文章</a></li>
                     </ul>
                     @if (if_query('tab', 'replies'))
                         @include('users._replies', ['replies' => $user->replies()->with('topic')->recent()->paginate(5)])
+                    @elseif (if_query('tab','likes'))
+                        @include('users._likes',['topics' => $user->likes()->with('likeable')->latest('id')->paginate(5)])
                     @else
                         @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)])
                     @endif
+
                 </div>
             </div>
 

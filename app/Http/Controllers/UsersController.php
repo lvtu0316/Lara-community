@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Handlers\ImageUploadHandler;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -45,6 +46,21 @@ class UsersController extends Controller
         $name = $request->q;
         $users  =User::where('name','like',$name."%")->get();
         return response()->json($users);
+    }
+
+    /*
+     * 用户点赞文章
+     */
+    public function likes()
+    {
+        $user_id = Auth::user();
+        $likes = $user_id->likes()->with('likeable')->latest('id')->get();
+        foreach ($likes as $index=>$value )
+        {
+            dd($value->likeable->title);
+        }
+
+        dd($likes->likeable->title);
     }
 
 

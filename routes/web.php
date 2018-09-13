@@ -55,3 +55,4 @@ Route::get('cache_at','UsersController@cacheAt')->name('users.cache.at');
 Route::group(['before' => 'auth'], function () {
     Route::post('/topics/{id}/upvote', 'TopicsController@upvote')->name('topics.upvote');
 });
+Route::get('/users/{id}/likes','UsersController@likes')->name('users.likes');

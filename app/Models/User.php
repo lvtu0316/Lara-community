@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use \Cog\Laravel\Love\Like\Models\Like;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -84,6 +85,11 @@ class User extends Authenticatable implements JWTSubject, LikerContract
         return $this->hasMany(Reply::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'user_id');
+    }
+
     public function setPasswordAttribute($value)
     {
         // 如果值的长度等于 60，即认为是已经做过加密的情况
@@ -119,4 +125,6 @@ class User extends Authenticatable implements JWTSubject, LikerContract
     {
         return [];
     }
+
+
 }
