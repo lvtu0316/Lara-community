@@ -20,15 +20,13 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
- *
- * @internal
  */
 class CombinationExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function getCombinationTranslators(): array
+    public function getCombinationTranslators()
     {
         return array(
             ' ' => array($this, 'translateDescendant'),
@@ -41,7 +39,7 @@ class CombinationExtension extends AbstractExtension
     /**
      * @return XPathExpr
      */
-    public function translateDescendant(XPathExpr $xpath, XPathExpr $combinedXpath): XPathExpr
+    public function translateDescendant(XPathExpr $xpath, XPathExpr $combinedXpath)
     {
         return $xpath->join('/descendant-or-self::*/', $combinedXpath);
     }

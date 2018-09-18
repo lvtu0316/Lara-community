@@ -18,8 +18,6 @@ namespace Symfony\Component\CssSelector\Node;
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
- *
- * @internal
  */
 class AttributeNode extends AbstractNode
 {
@@ -29,7 +27,14 @@ class AttributeNode extends AbstractNode
     private $operator;
     private $value;
 
-    public function __construct(NodeInterface $selector, ?string $namespace, string $attribute, string $operator, ?string $value)
+    /**
+     * @param NodeInterface $selector
+     * @param string        $namespace
+     * @param string        $attribute
+     * @param string        $operator
+     * @param string        $value
+     */
+    public function __construct(NodeInterface $selector, $namespace, $attribute, $operator, $value)
     {
         $this->selector = $selector;
         $this->namespace = $namespace;
@@ -38,27 +43,42 @@ class AttributeNode extends AbstractNode
         $this->value = $value;
     }
 
-    public function getSelector(): NodeInterface
+    /**
+     * @return NodeInterface
+     */
+    public function getSelector()
     {
         return $this->selector;
     }
 
-    public function getNamespace(): ?string
+    /**
+     * @return string
+     */
+    public function getNamespace()
     {
         return $this->namespace;
     }
 
-    public function getAttribute(): string
+    /**
+     * @return string
+     */
+    public function getAttribute()
     {
         return $this->attribute;
     }
 
-    public function getOperator(): string
+    /**
+     * @return string
+     */
+    public function getOperator()
     {
         return $this->operator;
     }
 
-    public function getValue(): ?string
+    /**
+     * @return string
+     */
+    public function getValue()
     {
         return $this->value;
     }
@@ -66,7 +86,7 @@ class AttributeNode extends AbstractNode
     /**
      * {@inheritdoc}
      */
-    public function getSpecificity(): Specificity
+    public function getSpecificity()
     {
         return $this->selector->getSpecificity()->plus(new Specificity(0, 1, 0));
     }
@@ -74,7 +94,7 @@ class AttributeNode extends AbstractNode
     /**
      * {@inheritdoc}
      */
-    public function __toString(): string
+    public function __toString()
     {
         $attribute = $this->namespace ? $this->namespace.'|'.$this->attribute : $this->attribute;
 

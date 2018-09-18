@@ -165,6 +165,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+
         // Scout全文搜索
         Laravel\Scout\ScoutServiceProvider::class,
         ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
@@ -183,11 +184,14 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+
         /*
          * 极光推送
          */
         App\Providers\EasySmsServiceProvider::class,
         App\Providers\JpushServiceProvider::class,
+
+
 
     ],
 

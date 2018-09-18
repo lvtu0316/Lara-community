@@ -29,7 +29,6 @@
 - [云片](https://www.yunpian.com)
 - [Submail](https://www.mysubmail.com)
 - [螺丝帽](https://luosimao.com/)
-- [阿里大于](https://www.alidayu.com/)
 - [容联云通讯](http://www.yuntongxun.com)
 - [互亿无线](http://www.ihuyi.com)
 - [聚合数据](https://www.juhe.cn)
@@ -40,7 +39,8 @@
 - [融云](http://www.rongcloud.cn)
 - [天毅无线](http://www.85hu.com/)
 - [腾讯云 SMS](https://cloud.tencent.com/product/sms)
-
+- [阿里大于](https://www.alidayu.com/)(不推荐使用，请使用阿里云)
+- [阿凡达数据](http://www.avatardata.cn/)
 
 ## 环境需求
 
@@ -399,8 +399,16 @@ $easySms->send(13188888888, $message);
 
 ```php
     'chuanglan' => [
-        'username'  => '',
+        'account' => '',
         'password' => '',
+
+        // \Overtrue\EasySms\Gateways\ChuanglanGateway::CHANNEL_VALIDATE_CODE  => 验证码通道（默认）
+        // \Overtrue\EasySms\Gateways\ChuanglanGateway::CHANNEL_PROMOTION_CODE => 会员营销通道
+        'channel'  => \Overtrue\EasySms\Gateways\ChuanglanGateway::CHANNEL_VALIDATE_CODE, 
+
+        // 会员营销通道 特定参数。创蓝规定：api提交营销短信的时候，需要自己加短信的签名及退订信息
+        'sign' => '【通讯云】',
+        'unsubscribe' => '回TD退订', 
     ],
 ```
 
@@ -447,6 +455,16 @@ $easySms->send(13188888888, $message);
 ```php
     'qcloud' => [
         'sdk_app_id' => '', // SDK APP ID
+        'app_key' => '', // APP KEY
+    ],
+```
+
+### [阿凡达数据](http://www.avatardata.cn/)
+
+短信内容使用 `template` + `data`
+
+```php
+    'avatardata' => [
         'app_key' => '', // APP KEY
     ],
 ```

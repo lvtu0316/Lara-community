@@ -18,8 +18,6 @@ namespace Symfony\Component\CssSelector\Node;
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
- *
- * @internal
  */
 abstract class AbstractNode implements NodeInterface
 {
@@ -31,7 +29,7 @@ abstract class AbstractNode implements NodeInterface
     /**
      * @return string
      */
-    public function getNodeName(): string
+    public function getNodeName()
     {
         if (null === $this->nodeName) {
             $this->nodeName = preg_replace('~.*\\\\([^\\\\]+)Node$~', '$1', get_called_class());
