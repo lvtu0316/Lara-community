@@ -25,6 +25,7 @@ class ReplyObserver
         $topic = $reply->topic;
         $reply->topic->increment('reply_count', 1);
         // 通知作者话题被回复了
+       // dd($topic->user);
         $topic->user->notify(new TopicReplied($reply));
     }
 

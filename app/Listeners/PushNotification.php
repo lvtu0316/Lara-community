@@ -27,9 +27,9 @@ class PushNotification
     public function handle(DatabaseNotification $notification)
     {
         // 本地环境默认不推送
-//        if (app()->environment('local')) {
-//            return;
-//        }
+        if (app()->environment('local')) {
+            return;
+        }
 
         $user = $notification->notifiable;
 
