@@ -34,7 +34,6 @@ class TranslateSlug implements ShouldQueue
     {
         // 请求百度 API 接口进行翻译
         $slug = app(SlugTranslateHandler::class)->translate($this->topic->title);
-        file_put_contents('sss.txt',$slug);
         // 为了避免模型监控器死循环调用，我们使用 DB 类直接对数据库进行操作
         \DB::table('topics')->where('id', $this->topic->id)->update(['slug' => $slug]);
     }

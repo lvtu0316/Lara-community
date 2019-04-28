@@ -22,19 +22,19 @@ class User extends Authenticatable implements JWTSubject, LikerContract
 
     use PresentableTrait;
     protected $presenter = 'App\Presenters\UserPresenter';
-//    use Searchable;
+    use Searchable;
 
-//    public function searchableAs()
-//    {
-//        return 'users';
-//    }
-//
-//    public function toSearchableArray()
-//    {
-//        return [
-//            'content' => $this->name
-//        ];
-//    }
+    public function searchableAs()
+    {
+        return 'users';
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'content' => $this->name
+        ];
+    }
 
     use Notifiable {
         notify as protected laravelNotify;

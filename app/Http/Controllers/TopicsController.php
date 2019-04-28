@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\TopicRequest;
 use Illuminate\Support\Facades\Auth;
+
 class TopicsController extends Controller
 {
     public function __construct()
@@ -30,7 +31,7 @@ class TopicsController extends Controller
     {
         $active_users = $user->getActiveUsers();
         $topics = Topic::search($request->keywords)->paginate(30);
-//        $topics = User::search($request->keywords)->paginate(30);
+//        $topics = Reply::search($request->keywords)->paginate(30);
 //        dd($topics);
         $links = $link->getAllCached();
         $keyword = $request->keywords;
@@ -55,7 +56,7 @@ class TopicsController extends Controller
 
 	public function store(TopicRequest $request,Topic $topic)
 	{
-		$topic->fill($request->all());
+        $topic->fill($request->all());
         $topic->user_id = Auth::id();
         $topic->save();
 		return redirect()->to($topic->link())->with('success', '创建成功');

@@ -45,11 +45,11 @@ class ESInit extends Command
     protected function createIndex(Client $client)
     {
         $url = config('scout.elasticsearch.hosts')[0] . ':9200/' . config('scout.elasticsearch.index');
-        $client->put($url, [
+        $params = [
             'json' => [
                 'settings' => [
-                    'refresh_interval' => '5s',  //一个索引中含有的主分片的数量
-                    'number_of_shards' => 1,    //每一个主分片关联的副本分片的数量
+                    'refresh_interval' => '5s',
+                    'number_of_shards' => 5,
                     'number_of_replicas' => 0,
                 ],
                 'mappings' => [
@@ -59,24 +59,23 @@ class ESInit extends Command
                         ]
                     ]
                 ]
+
             ]
-        ]);
+        ];
+        $client->put($url, $params);
     }
 
     protected function createTemplate(Client $client)
     {
         $url = config('scout.elasticsearch.hosts')[0] . ':9200/' . '_template/tmp';
-        $client->put($url, [
+        $params = [
             'json' => [
-                'template' => '*',
+                'template' => config('scout.elasticsearch.index'),
                 'settings' => [
-                    'number_of_shards' => 1
+                    'number_of_shards' => 5
                 ],
                 'mappings' => [
-                    'doc' => [
-                        '_all' => [
-                            'enabled' => true
-                        ],
+                    '_default_' => [
                         'dynamic_templates' => [
                             [
                                 'strings' => [
@@ -97,7 +96,8 @@ class ESInit extends Command
                     ]
                 ]
             ]
-        ]);
+        ];
+        $client->put($url, $params);
 
     }
 }

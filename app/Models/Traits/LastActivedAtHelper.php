@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use phpDocumentor\Reflection\File;
 use Redis;
 use Carbon\Carbon;
 
@@ -16,7 +17,7 @@ trait LastActivedAtHelper
 
         // Redis 哈希表的命名，如：larabbs_last_actived_at_2017-10-21
         $hash = $this->getHashFromDateString(Carbon::now()->toDateString());
-
+file_put_contents('dsds.txt',$hash);
         // 字段名称，如：user_1
         $field = $this->getHashField();
         // 当前时间，如：2017-10-21 08:35:15
