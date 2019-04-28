@@ -31,6 +31,7 @@ return [
     'boolean'              => ':Attribute майдони фақат мантиқий қийматни қабул қилади.',
     'confirmed'            => ':Attribute майдони тасдиқланмади.',
     'date'                 => ':Attribute сана майдонига нотўғри қиймат киритилди.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':Attribute майдони :format форматга мос келмади.',
     'different'            => ':Attribute ва :other майдонлари фарқли бўлиши керак.',
     'digits'               => ':Attribute рақамли майдон узунлиги :digits бўлиши керак.',
@@ -93,7 +94,7 @@ return [
     'present'              => ':Attribute майдони кўрсатилиши керак.',
     'regex'                => ':Attribute майдони хато форматда.',
     'required'             => ':Attribute майдони тўлдирилиши шарт.',
-    'required_if'          => ':Attribute майдони тўлдирилиши шарт, қачонки :other майдони :values га тенг бўлса.',
+    'required_if'          => ':Attribute майдони тўлдирилиши шарт, қачонки :other майдони :value га тенг бўлса.',
     'required_unless'      => ':Attribute майдони тўлдирилиши шарт, қачонки :other майдони :values га тенг бўлмаса.',
     'required_with'        => ':Attribute майдони тўлдирилиши шарт, қачонки :values кўрсатилган бўлса.',
     'required_with_all'    => ':Attribute майдони тўлдирилиши шарт, қачонки :values кўрсатилган бўлса.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':Attribute майдонидаги белгилар сони :size га тенг бўлиши керак.',
         'array'   => ':Attribute майдонидаги элментлар сони :size га тенг бўлиши керак.',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ':Attribute майдони қатор (string) бўлиши керак.',
     'timezone'             => ':Attribute майдонининг қиймати мавжуд вақт минтақаси бўлиши керак.',
     'unique'               => ':Attribute майдонининг бундай қиймати мавжуд (киритлган).',
     'uploaded'             => ':Attribute майдонини юклаш муваффақиятли амалга ошмади.',
     'url'                  => ':Attribute майдони нотўғри форматга эга.',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

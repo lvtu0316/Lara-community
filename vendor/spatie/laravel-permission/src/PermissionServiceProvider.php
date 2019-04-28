@@ -2,6 +2,9 @@
 
 namespace Spatie\Permission;
 
+use Illuminate\Routing\Route;
+use Illuminate\Support\Collection;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Spatie\Permission\Contracts\Role as RoleContract;
@@ -9,32 +12,38 @@ use Spatie\Permission\Contracts\Permission as PermissionContract;
 
 class PermissionServiceProvider extends ServiceProvider
 {
-    public function boot(PermissionRegistrar $permissionLoader)
+    public function boot(PermissionRegistrar $permissionLoader, Filesystem $filesystem)
     {
         if (isNotLumen()) {
             $this->publishes([
                 __DIR__.'/../config/permission.php' => config_path('permission.php'),
             ], 'config');
 
-            if (! class_exists('CreatePermissionTables')) {
-                $timestamp = date('Y_m_d_His', time());
+            $this->publishes([
+                __DIR__.'/../database/migrations/create_permission_tables.php.stub' => $this->getMigrationFileName($filesystem),
+            ], 'migrations');
 
-                $this->publishes([
-                    __DIR__.'/../database/migrations/create_permission_tables.php.stub' => $this->app->databasePath()."/migrations/{$timestamp}_create_permission_tables.php",
-                ], 'migrations');
+            if (app()->version() >= '5.5') {
+                $this->registerMacroHelpers();
             }
         }
 
         if ($this->app->runningInConsole()) {
             $this->commands([
+                Commands\CacheReset::class,
                 Commands\CreateRole::class,
                 Commands\CreatePermission::class,
+                Commands\Show::class,
             ]);
         }
 
         $this->registerModelBindings();
 
         $permissionLoader->registerPermissions();
+
+        $this->app->singleton(PermissionRegistrar::class, function ($app) use ($permissionLoader) {
+            return $permissionLoader;
+        });
     }
 
     public function register()
@@ -64,6 +73,11 @@ class PermissionServiceProvider extends ServiceProvider
                 list($role, $guard) = explode(',', $arguments.',');
 
                 return "<?php if(auth({$guard})->check() && auth({$guard})->user()->hasRole({$role})): ?>";
+            });
+            $bladeCompiler->directive('elserole', function ($arguments) {
+                list($role, $guard) = explode(',', $arguments.',');
+
+                return "<?php elseif(auth({$guard})->check() && auth({$guard})->user()->hasRole({$role})): ?>";
             });
             $bladeCompiler->directive('endrole', function () {
                 return '<?php endif; ?>';
@@ -95,6 +109,59 @@ class PermissionServiceProvider extends ServiceProvider
             $bladeCompiler->directive('endhasallroles', function () {
                 return '<?php endif; ?>';
             });
+
+            $bladeCompiler->directive('unlessrole', function ($arguments) {
+                list($role, $guard) = explode(',', $arguments.',');
+
+                return "<?php if(!auth({$guard})->check() || ! auth({$guard})->user()->hasRole({$role})): ?>";
+            });
+            $bladeCompiler->directive('endunlessrole', function () {
+                return '<?php endif; ?>';
+            });
         });
+    }
+
+    protected function registerMacroHelpers()
+    {
+        Route::macro('role', function ($roles = []) {
+            if (! is_array($roles)) {
+                $roles = [$roles];
+            }
+
+            $roles = implode('|', $roles);
+
+            $this->middleware("role:$roles");
+
+            return $this;
+        });
+
+        Route::macro('permission', function ($permissions = []) {
+            if (! is_array($permissions)) {
+                $permissions = [$permissions];
+            }
+
+            $permissions = implode('|', $permissions);
+
+            $this->middleware("permission:$permissions");
+
+            return $this;
+        });
+    }
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     *
+     * @param Filesystem $filesystem
+     * @return string
+     */
+    protected function getMigrationFileName(Filesystem $filesystem): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem) {
+                return $filesystem->glob($path.'*_create_permission_tables.php');
+            })->push($this->app->databasePath()."/migrations/{$timestamp}_create_permission_tables.php")
+            ->first();
     }
 }

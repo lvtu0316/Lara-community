@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -15,13 +16,13 @@ return [
     'accepted'             => 'Trường :attribute phải được chấp nhận.',
     'active_url'           => 'Trường :attribute không phải là một URL hợp lệ.',
     'after'                => 'Trường :attribute phải là một ngày sau ngày :date.',
-    'after_or_equal'       => 'Trường :attribute phải là thời gian bắt đầu sau :date.',
+    'after_or_equal'       => 'Trường :attribute phải là thời gian bắt đầu sau hoặc đúng bằng :date.',
     'alpha'                => 'Trường :attribute chỉ có thể chứa các chữ cái.',
     'alpha_dash'           => 'Trường :attribute chỉ có thể chứa chữ cái, số và dấu gạch ngang.',
     'alpha_num'            => 'Trường :attribute chỉ có thể chứa chữ cái và số.',
     'array'                => 'Trường :attribute phải là dạng mảng.',
     'before'               => 'Trường :attribute phải là một ngày trước ngày :date.',
-    'before_or_equal'      => 'Trường :attribute phải là thời gian bắt đầu trước :date.',
+    'before_or_equal'      => 'Trường :attribute phải là thời gian bắt đầu trước hoặc đúng bằng :date.',
     'between'              => [
         'numeric' => 'Trường :attribute phải nằm trong khoảng :min - :max.',
         'file'    => 'Dung lượng tập tin trong trường :attribute phải từ :min - :max kB.',
@@ -31,6 +32,7 @@ return [
     'boolean'              => 'Trường :attribute phải là true hoặc false.',
     'confirmed'            => 'Giá trị xác nhận trong trường :attribute không khớp.',
     'date'                 => 'Trường :attribute không phải là định dạng của ngày-tháng.',
+    'date_equals'          => 'Trường :attribute phải là một ngày bằng với :date.',
     'date_format'          => 'Trường :attribute không giống với định dạng :format.',
     'different'            => 'Trường :attribute và :other phải khác nhau.',
     'digits'               => 'Độ dài của trường :attribute phải gồm :digits chữ số.',
@@ -42,16 +44,16 @@ return [
     'file'                 => 'Trường :attribute phải là một tệp tin.',
     'filled'               => 'Trường :attribute không được bỏ trống.',
     'gt'                   => [
-        'numeric' => 'The :attribute must be greater than :value.',
-        'file'    => 'The :attribute must be greater than :value kilobytes.',
-        'string'  => 'The :attribute must be greater than :value characters.',
-        'array'   => 'The :attribute must have more than :value items.',
+        'numeric' => 'Giá trị trường :attribute phải lớn hơn :value.',
+        'file'    => 'Dung lượng trường :attribute phải lớn hơn :value kilobytes.',
+        'string'  => 'Độ dài trường :attribute phải nhiều hơn :value kí tự.',
+        'array'   => 'Mảng :attribute phải có nhiều hơn :value phần tử.',
     ],
     'gte'                  => [
-        'numeric' => 'The :attribute must be greater than or equal :value.',
-        'file'    => 'The :attribute must be greater than or equal :value kilobytes.',
-        'string'  => 'The :attribute must be greater than or equal :value characters.',
-        'array'   => 'The :attribute must have :value items or more.',
+        'numeric' => 'Giá trị trường :attribute phải lớn hơn hoặc bằng :value.',
+        'file'    => 'Dung lượng trường :attribute phải lớn hơn hoặc bằng :value kilobytes.',
+        'string'  => 'Độ dài trường :attribute phải lớn hơn hoặc bằng :value kí tự.',
+        'array'   => 'Mảng :attribute phải có ít nhất :value phần tử.',
     ],
     'image'                => 'Trường :attribute phải là định dạng hình ảnh.',
     'in'                   => 'Giá trị đã chọn trong trường :attribute không hợp lệ.',
@@ -62,16 +64,16 @@ return [
     'ipv6'                 => 'Trường :attribute phải là một địa chỉ IPv6.',
     'json'                 => 'Trường :attribute phải là một chuỗi JSON.',
     'lt'                   => [
-        'numeric' => 'The :attribute must be less than :value.',
-        'file'    => 'The :attribute must be less than :value kilobytes.',
-        'string'  => 'The :attribute must be less than :value characters.',
-        'array'   => 'The :attribute must have less than :value items.',
+        'numeric' => 'Giá trị trường :attribute phải nhỏ hơn :value.',
+        'file'    => 'Dung lượng trường :attribute phải nhỏ hơn :value kilobytes.',
+        'string'  => 'Độ dài trường :attribute phải nhỏ hơn :value kí tự.',
+        'array'   => 'Mảng :attribute phải có ít hơn :value phần tử.',
     ],
     'lte'                  => [
-        'numeric' => 'The :attribute must be less than or equal :value.',
-        'file'    => 'The :attribute must be less than or equal :value kilobytes.',
-        'string'  => 'The :attribute must be less than or equal :value characters.',
-        'array'   => 'The :attribute must not have more than :value items.',
+        'numeric' => 'Giá trị trường :attribute phải nhỏ hơn hoặc bằng :value.',
+        'file'    => 'Dung lượng trường :attribute phải nhỏ hơn hoặc bằng :value kilobytes.',
+        'string'  => 'Độ dài trường :attribute phải nhỏ hơn hoặc bằng :value kí tự.',
+        'array'   => 'Mảng :attribute không được có nhiều hơn :value phần tử.',
     ],
     'max'                  => [
         'numeric' => 'Trường :attribute không được lớn hơn :max.',
@@ -106,11 +108,13 @@ return [
         'string'  => 'Trường :attribute phải chứa :size ký tự.',
         'array'   => 'Trường :attribute phải chứa :size phần tử.',
     ],
+    'starts_with'          => 'Trường :attribute phải được bắt đầu bằng một trong những giá trị sau: :values',
     'string'               => 'Trường :attribute phải là một chuỗi ký tự.',
     'timezone'             => 'Trường :attribute phải là một múi giờ hợp lệ.',
     'unique'               => 'Trường :attribute đã có trong cơ sở dữ liệu.',
     'uploaded'             => 'Trường :attribute tải lên thất bại.',
     'url'                  => 'Trường :attribute không giống với định dạng một URL.',
+    'uuid'                 => 'Trường :attribute phải là một chuỗi UUID hợp lệ.',
 
     /*
     |--------------------------------------------------------------------------
@@ -141,5 +145,38 @@ return [
     */
 
     'attributes' => [
+        'name'                  => 'tên',
+        'username'              => 'tên đăng nhập',
+        'email'                 => 'email',
+        'first_name'            => 'tên',
+        'last_name'             => 'họ',
+        'password'              => 'mật khẩu',
+        'password_confirmation' => 'xác nhận mật khẩu',
+        'city'                  => 'thành phố',
+        'country'               => 'quốc gia',
+        'address'               => 'địa chỉ',
+        'phone'                 => 'số điện thoại',
+        'mobile'                => 'di động',
+        'age'                   => 'tuổi',
+        'sex'                   => 'giới tính',
+        'gender'                => 'giới tính',
+        'year'                  => 'năm',
+        'month'                 => 'tháng',
+        'day'                   => 'ngày',
+        'hour'                  => 'giờ',
+        'minute'                => 'phút',
+        'second'                => 'giây',
+        'title'                 => 'tiêu đề',
+        'content'               => 'nội dung',
+        'body'                  => 'nội dung',
+        'description'           => 'mô tả',
+        'excerpt'               => 'trích dẫn',
+        'date'                  => 'ngày',
+        'time'                  => 'thời gian',
+        'subject'               => 'tiêu đề',
+        'message'               => 'lời nhắn',
+        'available'             => 'có sẵn',
+        'size'                  => 'kích thước',
     ],
+
 ];

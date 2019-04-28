@@ -93,7 +93,7 @@ trait HasHttpRequest
     {
         $options = [
             'base_uri' => method_exists($this, 'getBaseUri') ? $this->getBaseUri() : '',
-            'timeout' => property_exists($this, 'timeout') ? $this->timeout : 5.0,
+            'timeout' => method_exists($this, 'getTimeout') ? $this->getTimeout() : 5.0,
         ];
 
         return $options;
@@ -118,7 +118,7 @@ trait HasHttpRequest
      *
      * @param \Psr\Http\Message\ResponseInterface $response
      *
-     * @return array
+     * @return ResponseInterface|array|string
      */
     protected function unwrapResponse(ResponseInterface $response)
     {

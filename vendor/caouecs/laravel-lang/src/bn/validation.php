@@ -31,6 +31,7 @@ return [
     'boolean'              => ':attribute স্থানে  সত্য বা মিথ্যা হতে হবে।',
     'confirmed'            => ':attribute নিশ্চিতকরণ এর  সাথে মিলছে না।',
     'date'                 => ':attribute একটি বৈধ তারিখ নয়।',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':attribute, :format এর সাথে বিন্যাস মিলছে না।',
     'different'            => ':attribute এবং :other আলাদা হতে হবে।',
     'digits'               => ':attribute :digits অবশ্যই একটি সংখ্যার ডিজিট হতে হবে।',
@@ -94,7 +95,7 @@ return [
     'regex'                => ':attribute বিন্যাস অবৈধ।',
     'required'             => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক।',
     'required_if'          => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যেখানে :other হল :value।',
-    'required_unless'      => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যদি না :other, :value তে উপস্থিত থাকে।',
+    'required_unless'      => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যদি না :other, :values তে উপস্থিত থাকে।',
     'required_with'        => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যখন  :values উপস্থিত।',
     'required_with_all'    => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যখন :values উপস্থিত।',
     'required_without'     => ':attribute স্থানটি পূরণ করা বাধ্যতামূলক যখন :values অনুপস্থিত।',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute অবশ্যই :size অক্ষর হতে হবে।',
         'array'   => ':attribute অবশ্যই :size আইটেম হতে হবে।',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ':attribute একটি স্ট্রিং হতে হবে।',
     'timezone'             => ':attribute একটি বৈধ সময় অঞ্চল হতে হবে।',
     'unique'               => ':attribute ইতিমধ্যেই নেওয়া হয়েছে।',
     'uploaded'             => ':attribute আপলোড করতে ব্যর্থ হয়েছে।',
     'url'                  => ':attribute বিন্যাস অবৈধ।',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

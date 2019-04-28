@@ -31,6 +31,7 @@ return [
     'boolean'              => ':Attribute талбарын утга үнэн эсвэл худал байх шаардлагатай.',
     'confirmed'            => ':Attribute талбарын баталагажуулалт тохирохгүй байна.',
     'date'                 => ':Attribute талбарт оруулсан огноо буруу байна.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':Attribute талбарт :format хэлбэртэй огноо оруулна уу.',
     'different'            => ':Attribute талбарт :other -с өөр утга оруулах шаардлагатай.',
     'digits'               => ':Attribute талбарт дараах цифрүүдээс оруулах боломжтой. :digits.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':Attribute :size тэмдэгтийн урттай байх шаардлагатай.',
         'array'   => ':Attribute :size элемэнттэй байх шаардлагатай.',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ':Attribute талбарт текст оруулна уу.',
     'timezone'             => ':Attribute талбарт зөв цагийн бүс оруулна уу.',
     'unique'               => 'Оруулсан :attribute аль хэдий нь бүртгэгдсэн байна.',
     'uploaded'             => ':Attribute талбарт оруулсан файлыг хуулхад алдаа гарлаа.',
     'url'                  => ':Attribute зөв url хаяг оруулна уу.',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

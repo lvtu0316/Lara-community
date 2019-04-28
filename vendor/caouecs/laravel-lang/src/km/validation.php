@@ -31,6 +31,7 @@ return [
     'boolean'              => 'The :attribute field must be true or false',
     'confirmed'            => ':attribute ការបញ្ជាក់មិនផ្គូផ្គង។',
     'date'                 => ':attribute គឺមិនមែនជាកាលបរិច្ឆេទត្រឹមត្រូវ។',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':attribute មិនត្រឹមត្រូវនិងទំរង :formatនេះ។',
     'different'            => ':attribute និង :other ត្រូវតែបញ្ជាក់។',
     'digits'               => ':attribute ត្រូវជាខ្ទុង :digits។',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute ត្រូវតែ :size តួអក្សរ។',
         'array'   => ':attribute ត្រូវតែមានទំហំ :size។',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => ':attribute ត្រូវបានប្រើរួចហើយ។',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => ':attribute ទំរង់ត្រឹមត្រូវ។',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

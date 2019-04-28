@@ -2,16 +2,17 @@
 
 namespace SwooleTW\Http\Tests\SocketIO;
 
+use Illuminate\Support\Facades\App;
 use Mockery as m;
 use Swoole\Websocket\Frame;
-use Swoole\Websocket\Server;
 use SwooleTW\Http\Tests\TestCase;
-use Illuminate\Support\Facades\App;
 use SwooleTW\Http\Websocket\SocketIO\SocketIOParser;
 use SwooleTW\Http\Websocket\SocketIO\Strategies\HeartbeatStrategy;
 
 class ParserTest extends TestCase
 {
+    protected static $server;
+
     public function testEncode()
     {
         $event = 'foo';
@@ -37,27 +38,26 @@ class ParserTest extends TestCase
         $this->assertSame([
             'event' => 'foo',
             'data' => [
-                'message' => 'test'
-            ]
+                'message' => 'test',
+            ],
         ], $parser->decode($frame));
 
         $payload = '42["foo","bar"]';
         $frame->data = $payload;
         $this->assertSame([
             'event' => 'foo',
-            'data' => 'bar'
+            'data' => 'bar',
         ], $parser->decode($frame));
     }
 
     public function testExecute()
     {
         $frame = m::mock(Frame::class);
-        $server = new Server('0.0.0.0');
 
         $app = App::shouldReceive('call')->once();
 
         $parser = new SocketIOParser;
-        $skip = $parser->execute($server, $frame);
+        $skip = $parser->execute('server', $frame);
     }
 
     public function testHeartbeatStrategy()
@@ -68,11 +68,8 @@ class ParserTest extends TestCase
         $frame->data = $payload;
         $frame->fd = 1;
 
-        // // will lead to mockery bug
-        // $server = m::mock(swoole_websocket_server::class);
-        // $server->shouldReceive('push')->once();
-
-        $server = new Server('0.0.0.0');
+        $server = m::mock('server');
+        $server->shouldReceive('push')->once();
 
         $strategy = new HeartbeatStrategy;
         $this->assertFalse($strategy->handle($server, $frame));
@@ -80,8 +77,7 @@ class ParserTest extends TestCase
         $frame->data = '3';
         $this->assertTrue($strategy->handle($server, $frame));
 
-        // // will lead segmentation fault
-        // $frame->data = '2probe';
-        // $this->assertTrue($strategy->handle($server, $frame));
+        $frame->data = '2probe';
+        $this->assertTrue($strategy->handle($server, $frame));
     }
 }

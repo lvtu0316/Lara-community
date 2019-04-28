@@ -31,6 +31,7 @@ return [
     'boolean'              => ':attribute musi mieć wartość prawda albo fałsz',
     'confirmed'            => 'Potwierdzenie :attribute nie zgadza się.',
     'date'                 => ':attribute nie jest prawidłową datą.',
+    'date_equals'          => ':attribute musi być datą równą :date.',
     'date_format'          => ':attribute nie jest w formacie :format.',
     'different'            => ':attribute oraz :other muszą się różnić.',
     'digits'               => ':attribute musi składać się z :digits cyfr.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute musi mieć :size znaków.',
         'array'   => ':attribute musi zawierać :size elementów.',
     ],
+    'starts_with'          => ':attribute musi się zaczynać jednym z wymienionych: :values',
     'string'               => ':attribute musi być ciągiem znaków.',
     'timezone'             => ':attribute musi być prawidłową strefą czasową.',
     'unique'               => 'Taki :attribute już występuje.',
     'uploaded'             => 'Nie udało się wgrać pliku :attribute.',
     'url'                  => 'Format :attribute jest nieprawidłowy.',
+    'uuid'                 => ':attribute musi być poprawnym identyfikatorem UUID.',
 
     /*
     |--------------------------------------------------------------------------

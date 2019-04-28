@@ -31,6 +31,7 @@ return [
     'boolean'              => 'The :attribute field must be true or false',
     'confirmed'            => 'Su campu de cunfirma pro :attribute non torrat.',
     'date'                 => ':attribute no est una data bàlida.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':attribute non torrat cun su formadu :format.',
     'different'            => ':attribute e :other depent èssere diferentes.',
     'digits'               => ':attribute depet èssere de :digits tzifras.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute depet cuntènnere :size caràteres.',
         'array'   => ':attribute depet cuntènnere :size elementos.',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => 'The :attribute must be a string.',
     'timezone'             => ':attribute depet èssere una zona bàlida.',
     'unique'               => ':attribute est istadu giai impreadu.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => ":attribute depet èssere un'URL.",
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

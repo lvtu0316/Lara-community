@@ -39,8 +39,8 @@
 - [融云](http://www.rongcloud.cn)
 - [天毅无线](http://www.85hu.com/)
 - [腾讯云 SMS](https://cloud.tencent.com/product/sms)
-- [阿里大于](https://www.alidayu.com/)(不推荐使用，请使用阿里云)
 - [阿凡达数据](http://www.avatardata.cn/)
+- [华为云](https://www.huaweicloud.com/product/msgsms.html)
 
 ## 环境需求
 
@@ -68,7 +68,7 @@ $config = [
 
         // 默认可用的发送网关
         'gateways' => [
-            'yunpian', 'aliyun', 'alidayu',
+            'yunpian', 'aliyun',
         ],
     ],
     // 可用的网关配置
@@ -84,9 +84,7 @@ $config = [
             'access_key_secret' => '',
             'sign_name' => '',
         ],
-        'alidayu' => [
-            //...
-        ],
+        //...
     ],
 ];
 
@@ -110,6 +108,58 @@ $easySms->send(13188888888, [
 - `data`  模板变量，使用在以模板ID来发送短信的平台
 
 所以，在使用过程中你可以根据所要使用的平台定义发送的内容。
+
+```php
+$easySms->send(13188888888, [
+    'content'  => '您的验证码为: 6379',
+    'template' => 'SMS_001',
+    'data' => [
+        'code' => 6379
+    ],
+]);
+```
+
+你也可以使用闭包来返回对应的值：
+
+```php
+$easySms->send(13188888888, [
+    'content'  => function($gateway){
+        return '您的验证码为: 6379';
+    },
+    'template' => function($gateway){
+        return 'SMS_001';
+    },
+    'data' => function($gateway){
+        return [
+            'code' => 6379
+        ];
+    },
+]);
+```
+
+你可以根据 `$gateway` 参数类型来判断返回值，例如：
+
+```php
+$easySms->send(13188888888, [
+    'content'  => function($gateway){
+        if ($gateway->getName() == 'yunpian') {
+            return '云片专用验证码：1235';
+        }
+        return '您的验证码为: 6379';
+    },
+    'template' => function($gateway){
+        if ($gateway->getName() == 'aliyun') {
+            return 'TP2818';
+        }
+        return 'SMS_001';
+    },
+    'data' => function($gateway){
+        return [
+            'code' => 6379
+        ];
+    },
+]);
+```
 
 ## 发送网关
 
@@ -277,14 +327,14 @@ $easySms->send(13188888888, $message);
     ],
 ```
 
-### [阿里大于](https://www.alidayu.com/)
+### [阿里云Rest](https://www.aliyun.com/)
 
 短信内容使用 `template` + `data`
 
 ```php
-    'alidayu' => [
+    'aliyunrest' => [
         'app_key' => '',
-        'app_secret' => '',
+        'app_secret_key' => '',
         'sign_name' => '',
     ],
 ```
@@ -296,6 +346,7 @@ $easySms->send(13188888888, $message);
 ```php
     'yunpian' => [
         'api_key' => '',
+        'signature' => '【默认签名】', // 内容中无签名时使用
     ],
 ```
 
@@ -307,7 +358,7 @@ $easySms->send(13188888888, $message);
     'submail' => [
         'app_id' => '',
         'app_key' => '',
-        'project' => '',
+        'project' => '', // 默认 project，可在发送时 data 中指定
     ],
 ```
 
@@ -342,6 +393,7 @@ $easySms->send(13188888888, $message);
     'huyi' => [
         'api_id' => '',
         'api_key' => '',
+        'signature' => '',
     ],
 ```
 
@@ -456,6 +508,7 @@ $easySms->send(13188888888, $message);
     'qcloud' => [
         'sdk_app_id' => '', // SDK APP ID
         'app_key' => '', // APP KEY
+        'sign_name' => '', // 短信签名，如果使用默认签名，该字段可缺省（对应官方文档中的sign）
     ],
 ```
 
@@ -468,6 +521,54 @@ $easySms->send(13188888888, $message);
         'app_key' => '', // APP KEY
     ],
 ```
+
+### [华为云 SMS](https://www.huaweicloud.com/product/msgsms.html)
+
+短信内容使用 `template` + `data`
+
+```php
+    'huawei' => [
+        'endpoint' => '', // APP接入地址
+        'app_key' => '', // APP KEY
+        'app_secret' => '', // APP SECRET
+        'from' => [
+            'default' => '1069012345', // 默认使用签名通道号
+            'custom' => 'csms12345', // 其他签名通道号 可以在 data 中定义 from 来指定
+            'abc' => 'csms67890', // 其他签名通道号
+            ...
+        ],
+        'callback' => '' // 短信状态回调地址
+    ],
+```
+
+使用默认签名通道 `default`
+
+```php
+$easySms->send(13188888888, [
+    'template' => 'SMS_001',
+    'data' => [
+        6379
+    ],
+]);
+```
+
+使用指定签名通道
+
+```php
+$easySms->send(13188888888, [
+    'template' => 'SMS_001',
+    'data' => [
+        6379,
+        'from' => 'custom' // 对应 config 中的 from 数组中 custom
+    ],
+]);
+```
+
+## PHP 扩展包开发
+
+> 想知道如何从零开始构建 PHP 扩展包？
+>
+> 请关注我的实战课程，我会在此课程中分享一些扩展开发经验 —— [《PHP 扩展包实战教程 - 从入门到发布》](https://learnku.com/courses/creating-package)
 
 ## License
 

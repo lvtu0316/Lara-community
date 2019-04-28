@@ -31,6 +31,7 @@ return [
     'boolean'              => ':attribute چوقۇم بۇل قىممىتى بۇلىشى كېرەك.',
     'confirmed'            => ':attribute ئىككى قېتىم كىرگۈزگەن قىممەت ئوخشاش بولمىدى.',
     'date'                 => ':attribute بىر ئىناۋەتلىك ۋاقىت ئەمەس.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':attribute تىپى چوقۇم :format بۇلىشى كېرەك.',
     'different'            => ':attribute بىلەن :other چوقۇم ئوخشاش بۇلىشى كېرەك.',
     'digits'               => ':attribute چوقۇم :digits خانىلىق سان بۇلىشى كېرەك.',
@@ -94,7 +95,7 @@ return [
     'regex'                => ':attribute ھۆججەت تىپى ئىناۋەتسىز.',
     'required'             => ':attribute قۇرۇق بولسا بولمايدۇ.',
     'required_if'          => ':other :value بولغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
-    'required_unless'      => ':other :value بولمىغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
+    'required_unless'      => ':other :values بولمىغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
     'required_with'        => ':values مەۋجۈت بولغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
     'required_with_all'    => ':values مەۋجۈت بولغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
     'required_without'     => ':values مەۋجۈت بولمىغاندا :attribute قۇرۇق بولسا بولمايدۇ.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute چوقۇم :size خەت.',
         'array'   => ':attribute چوقۇم :size بۆلەك.',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ':attribute چوقۇم بىر ھەرىپ بەلگە تىزىقى بۇلىشى كېرەك.',
     'timezone'             => ':attribute چوقۇم ئىناۋەتلىك ۋاقىت رايونى بۇلىشى كېرەك.',
     'unique'               => ':attribute ئاللابۇرۇن مەۋجۈت.',
     'uploaded'             => ':attribute يوللاش مەغلۇپ بولدى.',
     'url'                  => ':attribute ھۆججەت تىپى ئىناۋەتسىز.',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

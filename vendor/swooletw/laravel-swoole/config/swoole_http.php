@@ -1,7 +1,5 @@
 <?php
 
-use Swoole\Table;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -17,6 +15,11 @@ return [
         'public_path' => base_path('public'),
         // Determine if to use swoole to respond request for static files
         'handle_static_files' => env('SWOOLE_HANDLE_STATIC', true),
+        'access_log' => env('SWOOLE_HTTP_ACCESS_LOG', false),
+        // You must add --enable-openssl while compiling Swoole
+        // Put `SWOOLE_SOCK_TCP | SWOOLE_SSL` if you want to enable SSL
+        'socket_type' => SWOOLE_SOCK_TCP,
+        'process_type' => SWOOLE_PROCESS,
         'options' => [
             'pid_file' => env('SWOOLE_HTTP_PID_FILE', base_path('storage/logs/swoole_http.pid')),
             'log_file' => env('SWOOLE_HTTP_LOG_FILE', base_path('storage/logs/swoole_http.log')),
@@ -31,7 +34,7 @@ return [
             'buffer_output_size' => 10 * 1024 * 1024,
             // Max buffer size for socket connections
             'socket_buffer_size' => 128 * 1024 * 1024,
-            // Worker will restart after processing this number of request
+            // Worker will restart after processing this number of requests
             'max_request' => 3000,
             // Enable coroutine send
             'send_yield' => true,
@@ -52,10 +55,34 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Hot reload configuration
+    |--------------------------------------------------------------------------
+    */
+    'hot_reload' => [
+        'enabled' => env('SWOOLE_HOT_RELOAD_ENABLE', false),
+        'recursively' => env('SWOOLE_HOT_RELOAD_RECURSIVELY', true),
+        'directory' => env('SWOOLE_HOT_RELOAD_DIRECTORY', base_path()),
+        'log' => env('SWOOLE_HOT_RELOAD_LOG', true),
+        'filter' => env('SWOOLE_HOT_RELOAD_FILTER', '.php'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Console output will be transferred to response content if enabled.
     |--------------------------------------------------------------------------
     */
     'ob_output' => env('SWOOLE_OB_OUTPUT', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pre-resolved instances here will be resolved when sandbox created.
+    |--------------------------------------------------------------------------
+    */
+    'pre_resolved' => [
+        'view', 'files', 'session', 'session.store', 'routes',
+        'db', 'db.factory', 'cache', 'cache.store', 'config', 'cookie',
+        'encrypter', 'hash', 'router', 'translator', 'url', 'log',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -77,6 +104,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Resetters for sandbox app.
+    |--------------------------------------------------------------------------
+    */
+    'resetters' => [
+        SwooleTW\Http\Server\Resetters\ResetConfig::class,
+        SwooleTW\Http\Server\Resetters\ResetSession::class,
+        SwooleTW\Http\Server\Resetters\ResetCookie::class,
+        SwooleTW\Http\Server\Resetters\ClearInstances::class,
+        SwooleTW\Http\Server\Resetters\BindRequest::class,
+        SwooleTW\Http\Server\Resetters\RebindKernelContainer::class,
+        SwooleTW\Http\Server\Resetters\RebindRouterContainer::class,
+        SwooleTW\Http\Server\Resetters\RebindViewContainer::class,
+        SwooleTW\Http\Server\Resetters\ResetProviders::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Define your swoole tables here.
     |
     | @see https://www.swoole.co.uk/docs/modules/swoole-table
@@ -89,5 +133,5 @@ return [
         //         ['name' => 'column_name', 'type' => Table::TYPE_STRING, 'size' => 1024],
         //     ]
         // ],
-    ]
+    ],
 ];

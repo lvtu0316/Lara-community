@@ -13,10 +13,13 @@ use Laravel\Horizon\Events\SupervisorLooped;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Laravel\Horizon\Contracts\HorizonCommandQueue;
 use Laravel\Horizon\Contracts\SupervisorRepository;
+use Illuminate\Contracts\Cache\Factory as CacheFactory;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Supervisor implements Pausable, Restartable, Terminable
 {
+    use ListensForSignals;
+
     /**
      * The name of this supervisor instance.
      *
@@ -225,11 +228,24 @@ class Supervisor implements Pausable, Restartable, Terminable
             });
         });
 
-        while ($this->processPools->map->runningProcesses()->collapse()->count()) {
-            sleep(1);
+        if ($this->shouldWait()) {
+            while ($this->processPools->map->runningProcesses()->collapse()->count()) {
+                sleep(1);
+            }
         }
 
         $this->exit($status);
+    }
+
+    /**
+     * Check if the supervisor should wait for all its workers to terminate.
+     *
+     * @return bool
+     */
+    protected function shouldWait()
+    {
+        return ! config('horizon.fast_termination') ||
+               app(CacheFactory::class)->get('horizon:terminate:wait');
     }
 
     /**
@@ -273,6 +289,8 @@ class Supervisor implements Pausable, Restartable, Terminable
     public function loop()
     {
         try {
+            $this->processPendingSignals();
+
             $this->processPendingCommands();
 
             // If the supervisor is working, we will perform any needed scaling operations and
@@ -396,32 +414,6 @@ class Supervisor implements Pausable, Restartable, Terminable
     public function totalSystemProcessCount()
     {
         return app(SystemProcessCounter::class)->get($this->name);
-    }
-
-    /**
-     * Listen for incoming process signals.
-     *
-     * @return void
-     */
-    protected function listenForSignals()
-    {
-        pcntl_async_signals(true);
-
-        pcntl_signal(SIGTERM, function () {
-            $this->terminate();
-        });
-
-        pcntl_signal(SIGUSR1, function () {
-            $this->restart();
-        });
-
-        pcntl_signal(SIGUSR2, function () {
-            $this->pause();
-        });
-
-        pcntl_signal(SIGCONT, function () {
-            $this->continue();
-        });
     }
 
     /**

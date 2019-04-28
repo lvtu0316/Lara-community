@@ -31,6 +31,7 @@ return [
     'boolean'              => 'O campo :attribute deve conter o valor verdadeiro ou falso.',
     'confirmed'            => 'A confirmação para o campo :attribute não coincide.',
     'date'                 => 'O campo :attribute não contém uma data válida.',
+    'date_equals'          => 'O campo :attribute deve ser uma data igual a :date.',
     'date_format'          => 'A data informada para o campo :attribute não respeita o formato :format.',
     'different'            => 'Os campos :attribute e :other devem conter valores diferentes.',
     'digits'               => 'O campo :attribute deve conter :digits dígitos.',
@@ -88,7 +89,7 @@ return [
         'array'   => 'O campo :attribute deve conter no mínimo :min itens.',
     ],
     'not_in'               => 'O campo :attribute contém um valor inválido.',
-    'not_regex'            => 'The :attribute format is invalid.',
+    'not_regex'            => 'O formato do valor :attribute é inválido.',
     'numeric'              => 'O campo :attribute deve conter um valor numérico.',
     'present'              => 'O campo :attribute deve estar presente.',
     'regex'                => 'O formato do valor informado no campo :attribute é inválido.',
@@ -106,11 +107,13 @@ return [
         'string'  => 'O campo :attribute deve conter :size caracteres.',
         'array'   => 'O campo :attribute deve conter :size itens.',
     ],
+    'starts_with'          => 'O campo :attribute deve começar com um dos seguintes valores: :values',
     'string'               => 'O campo :attribute deve ser uma string.',
     'timezone'             => 'O campo :attribute deve conter um fuso horário válido.',
     'unique'               => 'O valor informado para o campo :attribute já está em uso.',
     'uploaded'             => 'Falha no Upload do arquivo :attribute.',
     'url'                  => 'O formato da URL informada para o campo :attribute é inválido.',
+    'uuid'                 => 'O campo :attribute deve ser um UUID válido.',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,5 +174,7 @@ return [
         'title'                 => 'título',
         'username'              => 'usuário',
         'year'                  => 'ano',
+        'email'                 => 'e-mail',
+        'remember'              => 'lembrar-se de mim',
     ],
 ];

@@ -2,8 +2,6 @@
 
 namespace SwooleTW\Http\Websocket\SocketIO\Strategies;
 
-use Swoole\Websocket\Frame;
-use Swoole\Websocket\Server;
 use SwooleTW\Http\Websocket\SocketIO\Packet;
 
 class HeartbeatStrategy
@@ -11,9 +9,12 @@ class HeartbeatStrategy
     /**
      * If return value is true will skip decoding.
      *
+     * @param \Swoole\WebSocket\Server $server
+     * @param \Swoole\WebSocket\Frame $frame
+     *
      * @return boolean
      */
-    public function handle(Server $server, Frame $frame)
+    public function handle($server, $frame)
     {
         $packet = $frame->data;
         $packetLength = strlen($packet);

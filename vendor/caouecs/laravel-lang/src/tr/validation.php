@@ -31,6 +31,7 @@ return [
     'boolean'              => ':attribute sadece doğru veya yanlış olmalıdır.',
     'confirmed'            => ':attribute tekrarı eşleşmiyor.',
     'date'                 => ':attribute geçerli bir tarih olmalıdır.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ':attribute :format biçimi ile eşleşmiyor.',
     'different'            => ':attribute ile :other birbirinden farklı olmalıdır.',
     'digits'               => ':attribute :digits rakam olmalıdır.',
@@ -94,7 +95,7 @@ return [
     'regex'                => ':attribute biçimi geçersiz.',
     'required'             => ':attribute alanı gereklidir.',
     'required_if'          => ':attribute alanı, :other :value değerine sahip olduğunda zorunludur.',
-    'required_unless'      => ':attribute alanı, :other alanı :value değerlerinden birine sahip olmadığında zorunludur.',
+    'required_unless'      => ':attribute alanı, :other alanı :values değerlerinden birine sahip olmadığında zorunludur.',
     'required_with'        => ':attribute alanı :values varken zorunludur.',
     'required_with_all'    => ':attribute alanı herhangi bir :values değeri varken zorunludur.',
     'required_without'     => ':attribute alanı :values yokken zorunludur.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute :size karakter olmalıdır.',
         'array'   => ':attribute :size nesneye sahip olmalıdır.',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ':attribute dizge olmalıdır.',
     'timezone'             => ':attribute geçerli bir saat dilimi olmalıdır.',
     'unique'               => ':attribute daha önceden kayıt edilmiş.',
     'uploaded'             => ':attribute yüklemesi başarısız.',
     'url'                  => ':attribute biçimi geçersiz.',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

@@ -21,18 +21,20 @@ use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
+ *
+ * @internal
  */
 class TokenStream
 {
     /**
      * @var Token[]
      */
-    private $tokens = array();
+    private $tokens = [];
 
     /**
      * @var Token[]
      */
-    private $used = array();
+    private $used = [];
 
     /**
      * @var int
@@ -140,7 +142,7 @@ class TokenStream
     /**
      * Returns nex identifier or star delimiter token.
      *
-     * @return null|string The identifier token value or null if star found
+     * @return string|null The identifier token value or null if star found
      *
      * @throws SyntaxErrorException If next token is not an identifier or a star delimiter
      */
@@ -152,7 +154,7 @@ class TokenStream
             return $next->getValue();
         }
 
-        if ($next->isDelimiter(array('*'))) {
+        if ($next->isDelimiter(['*'])) {
             return;
         }
 

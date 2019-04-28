@@ -3,18 +3,21 @@
 ![cog-laravel-love](https://user-images.githubusercontent.com/1849174/34500991-094a66da-f01e-11e7-9a6c-0480f1564338.png)
 
 <p align="center">
+<a href="https://github.com/cybercog/laravel-love/releases"><img src="https://img.shields.io/github/release/cybercog/laravel-love.svg?style=flat-square" alt="Releases"></a>
 <a href="https://travis-ci.org/cybercog/laravel-love"><img src="https://img.shields.io/travis/cybercog/laravel-love/master.svg?style=flat-square" alt="Build Status"></a>
 <a href="https://styleci.io/repos/116058336"><img src="https://styleci.io/repos/116058336/shield" alt="StyleCI"></a>
-<a href="https://github.com/cybercog/laravel-love/releases"><img src="https://img.shields.io/github/release/cybercog/laravel-love.svg?style=flat-square" alt="Releases"></a>
+<a href="https://scrutinizer-ci.com/g/cybercog/laravel-love/?branch=master"><img src="https://img.shields.io/scrutinizer/g/cybercog/laravel-love.svg?style=flat-square" alt="Code Quality"></a>
 <a href="https://github.com/cybercog/laravel-love/blob/master/LICENSE"><img src="https://img.shields.io/github/license/cybercog/laravel-love.svg?style=flat-square" alt="License"></a>
 </p>
 
 ## Introduction
 
-Laravel Love simplify management of Eloquent model's likes & dislikes. Make any model `likeable` & `dislikeable` in a minutes!
+Laravel Love simplify management of Eloquent model's likes & dislikes reactions. Make any model reactable with `likeable` & `dislikeable` in a minutes!
 
 This package is a fork of the abandoned [Laravel Likeable](https://github.com/cybercog/laravel-likeable).
 It completely changes package namespace architecture, aimed to API refactoring and adding new features.
+
+**NOTICE:** Laravel Love v5 accepts support PRs only (breaking changes not allowed).
 
 ## Contents
 
@@ -453,8 +456,8 @@ If you discover any security related issues, please email open@cybercog.su inste
 
 ## Contributors
 
-| <a href="https://github.com/a-komarev">![@a-komarev](https://avatars.githubusercontent.com/u/1849174?s=110)<br />Anton Komarev</a> | <a href="https://github.com/squigg">![@squigg](https://avatars.githubusercontent.com/u/4279310?s=110)<br />Squigg</a> | <a href="https://github.com/acidjazz">![@acidjazz](https://avatars.githubusercontent.com/u/967369?s=110)<br />Kevin Olson</a> | <a href="https://github.com/raniesantos">![@raniesantos](https://avatars.githubusercontent.com/u/8528269?s=110)<br />Ranie Santos</a> |  
-| :---: | :---: | :---: | :---: |
+| <a href="https://github.com/antonkomarev">![@antonkomarev](https://avatars.githubusercontent.com/u/1849174?s=110)<br />Anton Komarev</a> | <a href="https://github.com/squigg">![@squigg](https://avatars.githubusercontent.com/u/4279310?s=110)<br />Squigg</a> | <a href="https://github.com/acidjazz">![@acidjazz](https://avatars.githubusercontent.com/u/967369?s=110)<br />Kevin Olson</a> | <a href="https://github.com/raniesantos">![@raniesantos](https://avatars.githubusercontent.com/u/8528269?s=110)<br />Ranie Santos</a> | <a href="https://github.com/taliptako">![@taliptako](https://avatars.githubusercontent.com/u/2073785?s=110)<br />Talip Durmuş</a> |  
+| :---: | :---: | :---: | :---: | :---: |
 
 [Laravel Love contributors list](../../contributors)
 
@@ -465,12 +468,14 @@ If you discover any security related issues, please email open@cybercog.su inste
 - [faustbrian/laravel-likeable](https://github.com/faustbrian/Laravel-Likeable)
 - [sukohi/evaluation](https://github.com/SUKOHI/Evaluation)
 - [zvermafia/lavoter](https://github.com/zvermafia/lavoter)
+- [francescomalatesta/laravel-reactions](https://github.com/francescomalatesta/laravel-reactions)
+- [muratbsts/laravel-reactable](https://github.com/muratbsts/laravel-reactable)
 
 *Feel free to add more alternatives as Pull Request.*
 
 ## License
 
-- `Laravel Love` package is open-sourced software licensed under the [MIT license](LICENSE).
+- `Laravel Love` package is open-sourced software licensed under the [MIT license](LICENSE) by Anton Komarev.
 - `Devil` image licensed under [Creative Commons 3.0](https://creativecommons.org/licenses/by/3.0/us/) by YuguDesign.
 
 ## About CyberCog

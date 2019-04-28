@@ -31,6 +31,7 @@ return [
     'boolean'              => 'A(z) :attribute mező csak true vagy false értéket kaphat!',
     'confirmed'            => 'A(z) :attribute nem egyezik a megerősítéssel.',
     'date'                 => 'A(z) :attribute nem érvényes dátum.',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => 'A(z) :attribute nem egyezik az alábbi dátum formátummal :format!',
     'different'            => 'A(z) :attribute és :other értékei különbözőek kell, hogy legyenek!',
     'digits'               => 'A(z) :attribute :digits számjegyű kell, hogy legyen!',
@@ -88,7 +89,7 @@ return [
         'array'   => 'A(z) :attribute legalább :min elemet kell, hogy tartalmazzon.',
     ],
     'not_in'               => 'A(z) :attribute értéke érvénytelen.',
-    'not_regex'            => 'The :attribute format is invalid.',
+    'not_regex'            => 'A(z) :attribute formátuma érvénytelen.',
     'numeric'              => 'A(z) :attribute szám kell, hogy legyen!',
     'present'              => 'A(z) :attribute mező nem található!',
     'regex'                => 'A(z) :attribute formátuma érvénytelen.',
@@ -106,11 +107,13 @@ return [
         'string'  => 'A(z) :attribute hossza :size karakter kell, hogy legyen!',
         'array'   => 'A(z) :attribute :size elemet kell tartalmazzon!',
     ],
-    'string'               => 'A(z) :attribute szövegnek kell legyen.',
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
+    'string'               => 'A(z) :attribute szöveg kell, hogy legyen.',
     'timezone'             => 'A(z) :attribute nem létező időzona.',
     'unique'               => 'A(z) :attribute már foglalt.',
     'uploaded'             => 'A(z) :attribute feltöltése sikertelen.',
     'url'                  => 'A(z) :attribute érvénytelen link.',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

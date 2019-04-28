@@ -1,21 +1,20 @@
 # Laravel-lang
 
-[![Stories in Ready](https://badge.waffle.io/caouecs/Laravel-lang.svg?label=ready&title=Ready)](http://waffle.io/caouecs/Laravel-lang)
+[![Stories in Ready](https://badge.waffle.io/caouecs/Laravel-lang.svg)](http://waffle.io/caouecs/Laravel-lang)
 
 In this repository, you can find the lang files for the framework PHP, [Laravel 4&5](http://www.laravel.com).
 
-## Capital letters ( WIP )
+## Help us
 
-Since Laravel 5.2, we can define letters capitalized. A new branch has been created to add this feature : `capital_letters`.
-
-    We need your help to update validation files.
+    With [Laravel 5.8](https://github.com/caouecs/Laravel-lang/issues/1007), we must update passwords file, with the numbers of characters for the password, in `laravel58` branch.
 
 ## Install
 
 #### Via Composer
-* For Laravel 5.* : run `composer require caouecs/laravel-lang:~3.0` in your project folder
-* For Laravel 5 : run `composer require caouecs/laravel4-lang:~2.0` in your project folder
-* For Laravel 4 : run `composer require caouecs/laravel4-lang:~1.0` in your project folder
+* For Laravel 5.8 : run `composer require caouecs/laravel-lang:dev-laravel58` in your project folder
+* For Laravel 5.1-7 : run `composer require caouecs/laravel-lang:~3.0` in your project folder
+* For Laravel 5 : run `composer require caouecs/laravel-lang:~2.0` in your project folder
+* For Laravel 4 : run `composer require caouecs/laravel-lang:~1.0` in your project folder
 * Files of languages are in "vendor/caouecs/laravel-lang" directory
 * Copy the folders of languages that you want, in the *resources/lang* folder of your Laravel application (*app/lang* in Laravel 4).
 
@@ -60,9 +59,10 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Projects based on this package
 
-* [LaravelLang by ARCANEDEV](https://github.com/ARCANEDEV/LaravelLang)
-* [Laravel-lang by overtrue](https://github.com/overtrue/laravel-lang)
-* [laravel-lang-installer by ablunier](https://github.com/ablunier/laravel-lang-installer)
+* [LaravelLang by ARCANEDEV](https://github.com/ARCANEDEV/LaravelLang) - Translations manager and checker for Laravel 5.
+* [Laravel-lang by overtrue](https://github.com/overtrue/laravel-lang) - Command to add languages in your project.
+* [laravel-lang-installer by ablunier](https://github.com/ablunier/laravel-lang-installer) - Command for easily add languages to a Laravel project.
+* [laravel-lang-publisher by Andrey Helldar](https://github.com/andrey-helldar/laravel-lang-publisher) - Easy installation and update of translation files for your project.
 
 ## Credits
 

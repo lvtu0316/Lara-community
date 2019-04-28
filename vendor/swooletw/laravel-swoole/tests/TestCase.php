@@ -2,9 +2,12 @@
 
 namespace SwooleTW\Http\Tests;
 
-use Mockery as m;
 use Illuminate\Support\Facades\Facade;
+use Mockery as m;
+use phpmock\Mock;
+use phpmock\MockBuilder;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use SwooleTW\Http\Coroutine\Context;
 
 class TestCase extends BaseTestCase
 {
@@ -14,7 +17,21 @@ class TestCase extends BaseTestCase
             m::getContainer()->mockery_getExpectationCount()
         );
 
+        Context::clear();
         Facade::clearResolvedInstances();
         parent::tearDown();
+        m::close();
+        Mock::disableAll();
+    }
+
+    protected function mockMethod($name, \Closure $function, $namespace = null)
+    {
+        $builder = new MockBuilder;
+        $builder->setNamespace($namespace)
+                ->setName($name)
+                ->setFunction($function);
+
+        $mock = $builder->build();
+        $mock->enable();
     }
 }

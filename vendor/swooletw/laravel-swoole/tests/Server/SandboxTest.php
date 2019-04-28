@@ -2,83 +2,172 @@
 
 namespace SwooleTW\Http\Tests\Server;
 
+use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\Container as ContainerContract;
+use Illuminate\Http\Request;
 use Mockery as m;
-use ReflectionProperty;
-use RuntimeException;
+use SwooleTW\Http\Coroutine\Context;
+use SwooleTW\Http\Exceptions\SandboxException;
+use SwooleTW\Http\Server\Application;
+use SwooleTW\Http\Server\Resetters\ResetterContract;
 use SwooleTW\Http\Server\Sandbox;
 use SwooleTW\Http\Tests\TestCase;
-use Illuminate\Container\Container;
-use SwooleTW\Http\Server\Application;
 
 class SandboxTest extends TestCase
 {
-    public function testGetSandbox()
+    public function testSetFramework()
     {
-        $this->assertTrue($this->getSandbox() instanceof Sandbox);
+        $sandbox = new Sandbox;
+        $sandbox->setFramework($framework = 'foo');
+
+        $this->assertSame($framework, $sandbox->getFramework());
     }
 
-    public function testMakeSandbox()
+    public function testSetBaseApp()
     {
-        $sandbox = Sandbox::make($this->getApplication());
+        $container = m::mock(Container::class);
 
-        $this->assertTrue($sandbox instanceof Sandbox);
+        $sandbox = new Sandbox;
+        $sandbox->setBaseApp($container);
+
+        $this->assertSame($container, $sandbox->getBaseApp());
+    }
+
+    public function testAppNotSetException()
+    {
+        $this->expectException(SandboxException::class);
+
+        $sandbox = new Sandbox;
+        $sandbox->initialize();
+    }
+
+    public function testInitialize()
+    {
+        $provider = m::mock('provider');
+        $providerName = get_class($provider);
+
+        $resetter = new TestResetter;
+        $resetterName = get_class($resetter);
+
+        $config = m::mock(Repository::class);
+        $config->shouldReceive('get')
+               ->with('swoole_http.providers', [])
+               ->once()
+               ->andReturn([$providerName]);
+        $config->shouldReceive('get')
+               ->with('swoole_http.resetters', [])
+               ->once()
+               ->andReturn([$resetterName]);
+
+        $container = m::mock(Container::class);
+        $container->shouldReceive('make')
+                  ->with(\Illuminate\Contracts\Config\Repository::class)
+                  ->once()
+                  ->andReturn($config);
+        $container->shouldReceive('make')
+                  ->with($resetterName)
+                  ->once()
+                  ->andReturn($resetter);
+
+        $sandbox = new Sandbox;
+        $sandbox->setBaseApp($container);
+        $sandbox->initialize();
+
+        $sandboxProvider = $sandbox->getProviders()[$providerName];
+        $sandboxResetter = $sandbox->getResetters()[$resetterName];
+
+        $this->assertTrue($sandbox->getConfig() instanceof Repository);
+        $this->assertSame($providerName, get_class($sandboxProvider));
+
+        $this->assertTrue($resetter instanceof ResetterContract);
+        $this->assertSame($resetter, $sandboxResetter);
     }
 
     public function testGetApplication()
     {
-        $this->assertTrue($this->getSandbox()->getApplication() instanceof Application);
+        $container = m::mock(Container::class);
+
+        $sandbox = new Sandbox;
+        $sandbox->setBaseApp($container);
+        $sandbox->getApplication();
+
+        $this->assertTrue($sandbox->getSnapshot() instanceof Container);
     }
 
-    protected function getSandbox()
+    public function testGetCachedSnapshot()
     {
-        $container = $this->getContainer();
-        $application = $this->getApplication();
+        $container = m::mock(Container::class);
+        $snapshot = m::mock(Container::class);
+        $snapshot->shouldReceive('offsetGet')
+                 ->with('foo')
+                 ->once()
+                 ->andReturn($result = 'bar');
 
-        $reflector = new \ReflectionClass(Application::class);
+        $sandbox = new Sandbox;
+        $sandbox->setBaseApp($container);
+        $sandbox->setSnapshot($snapshot);
 
-        $property = $reflector->getProperty('application');
-        $property->setAccessible(true);
-        $property->setValue($application, $container);
+        $this->assertTrue($sandbox->getApplication() instanceof Container);
+        $this->assertEquals($result, $sandbox->getApplication()->foo);
+    }
 
-        $sandbox = new Sandbox($application);
+    public function testRunWithoutSnapshot()
+    {
+        $this->expectException(SandboxException::class);
 
-        $reflector = new \ReflectionClass(Sandbox::class);
+        $sandbox = new Sandbox;
+        $sandbox->run($request = m::mock(Request::class));
+    }
 
-        $property = $reflector->getProperty('snapshot');
-        $property->setAccessible(true);
-        $property->setValue($sandbox, $application);
+    public function testSetRequest()
+    {
+        $request = m::mock(Request::class);
 
-        return $sandbox;
+        $sandbox = new Sandbox;
+        $sandbox->setRequest($request);
+
+        $this->assertSame($request, $sandbox->getRequest());
+        $this->assertSame($request, Context::getData('_request'));
+    }
+
+    public function testSetSnapshot()
+    {
+        $container = m::mock(Container::class);
+
+        $sandbox = new Sandbox;
+        $sandbox->setSnapshot($container);
+
+        $this->assertSame($container, $sandbox->getSnapshot());
+        $this->assertSame($container, Context::getApp());
+    }
+
+    public function testIsLaravel()
+    {
+        $sandbox = new Sandbox;
+
+        $this->assertTrue($sandbox->isLaravel());
     }
 
     protected function getContainer()
     {
         $config = m::mock(Illuminate\Config\Repository::class);
         $config->shouldReceive('get')
-            ->andReturn([]);
+               ->andReturn([]);
         $container = m::mock(Container::class);
         $container->shouldReceive('offsetGet')
-            ->andReturn((object)[]);
+                  ->andReturn((object) []);
         $container->shouldReceive('make')
-            ->andReturn($config);
+                  ->andReturn($config);
 
         return $container;
     }
+}
 
-    protected function getApplication()
+class TestResetter implements ResetterContract
+{
+    public function handle(ContainerContract $app, Sandbox $sandbox)
     {
-        $application = m::mock(Application::class);
-        $application->shouldReceive('getApplication')
-            ->andReturn($this->getContainer());
-        $application->shouldReceive('getFramework')
-            ->andReturn('test');
-
-        $reflector = new \ReflectionClass(Application::class);
-
-        $property = $reflector->getProperty('application');
-        $property->setAccessible(true);
-        $property->setValue($application, $this->getContainer());
-
-        return $application;
+        return 'foo';
     }
 }

@@ -41,14 +41,16 @@ class SubmailGateway extends Gateway
      */
     public function send(PhoneNumberInterface $to, MessageInterface $message, Config $config)
     {
-        $endpoint = $this->buildEndpoint($to->getIDDCode() ? 'internationalsms/xsend' : 'message/xsend');
+        $endpoint = $this->buildEndpoint($this->inChineseMainland($to) ? 'message/xsend' : 'internationalsms/xsend');
+
+        $data = $message->getData($this);
 
         $result = $this->post($endpoint, [
             'appid' => $config->get('app_id'),
             'signature' => $config->get('app_key'),
-            'project' => $config->get('project'),
+            'project' => !empty($data['project']) ? $data['project'] : $config->get('project'),
             'to' => $to->getUniversalNumber(),
-            'vars' => json_encode($message->getData($this), JSON_FORCE_OBJECT),
+            'vars' => json_encode($data, JSON_FORCE_OBJECT),
         ]);
 
         if ('success' != $result['status']) {
@@ -68,5 +70,19 @@ class SubmailGateway extends Gateway
     protected function buildEndpoint($function)
     {
         return sprintf(self::ENDPOINT_TEMPLATE, $function, self::ENDPOINT_FORMAT);
+    }
+
+    /**
+     * Check if the phone number belongs to chinese mainland.
+     *
+     * @param \Overtrue\EasySms\Contracts\PhoneNumberInterface $to
+     *
+     * @return bool
+     */
+    protected function inChineseMainland($to)
+    {
+        $code = $to->getIDDCode();
+
+        return empty($code) || 86 === $code;
     }
 }

@@ -21,6 +21,9 @@
   * [Using "direct" permissions](#using-direct-permissions-see-below-to-use-both-roles-and-permissions)
   * [Using permissions via roles](#using-permissions-via-roles)
   * [Using Blade directives](#using-blade-directives)
+  * [Defining a Super-Admin](#defining-a-super-admin)
+  * [Best Practices -- roles vs permissions](#best-practices----roles-vs-permissions)
+  * [Best Practices -- Using Policies](#best-practices----using-policies)
   * [Using multiple guards](#using-multiple-guards)
   * [Using a middleware](#using-a-middleware)
   * [Using artisan commands](#using-artisan-commands)
@@ -45,7 +48,7 @@ $role->givePermissionTo('edit articles');
 
 If you're using multiple guards we've got you covered as well. Every guard will have its own set of permissions and roles that can be assigned to the guard's users. Read about it in the [using multiple guards](#using-multiple-guards) section of the readme.
 
-Because all permissions will be registered on [Laravel's gate](https://laravel.com/docs/5.5/authorization), you can test if a user has a permission with Laravel's default `can` function:
+Because all permissions will be registered on [Laravel's gate](https://laravel.com/docs/5.5/authorization), you can check if a user has a permission with Laravel's default `can` function:
 
 ```php
 $user->can('edit articles');
@@ -69,7 +72,7 @@ You can install the package via composer:
 composer require spatie/laravel-permission
 ```
 
-In Laravel 5.5 the service provider will automatically get registered. In older versions of the framework just add the service provider in `config/app.php` file:
+The service provider will automatically get registered. Or you may manually add the service provider in your `config/app.php` file:
 
 ```php
 'providers' => [
@@ -84,12 +87,8 @@ You can publish [the migration](https://github.com/spatie/laravel-permission/blo
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations"
 ```
 
-If you're using UUIDs or GUIDs for your `User` models you can update the `create_permission_tables.php` migration and replace `$table->morphs('model')` with:
-
-```php
-$table->uuid('model_id');
-$table->string('model_type');
-```
+If you're using UUIDs or GUIDs for your `User` models you can update the `create_permission_tables.php` migration and replace `$table->unsignedBigInteger($columnNames['model_morph_key'])` with `$table->uuid($columnNames['model_morph_key'])`.
+For consistency, you can also update the package configuration file to use the `model_uuid` column name instead of the default `model_id` column.
 
 After the migration has been published you can create the role- and permission-tables by running the migrations:
 
@@ -111,7 +110,7 @@ return [
     'models' => [
 
         /*
-         * When using the "HasRoles" trait from this package, we need to know which
+         * When using the "HasPermissions" trait from this package, we need to know which
          * Eloquent model should be used to retrieve your permissions. Of course, it
          * is often just the "Permission" model but you may use whatever you like.
          *
@@ -145,7 +144,7 @@ return [
         'roles' => 'roles',
 
         /*
-         * When using the "HasRoles" trait from this package, we need to know which
+         * When using the "HasPermissions" trait from this package, we need to know which
          * table should be used to retrieve your permissions. We have chosen a basic
          * default value but you may easily change it to any table you like.
          */
@@ -153,7 +152,7 @@ return [
         'permissions' => 'permissions',
 
         /*
-         * When using the "HasRoles" trait from this package, we need to know which
+         * When using the "HasPermissions" trait from this package, we need to know which
          * table should be used to retrieve your models permissions. We have chosen a
          * basic default value but you may easily change it to any table you like.
          */
@@ -177,13 +176,18 @@ return [
         'role_has_permissions' => 'role_has_permissions',
     ],
 
-    /*
-     * By default all permissions will be cached for 24 hours unless a permission or
-     * role is updated. Then the cache will be flushed immediately.
-     */
+    'column_names' => [
 
-    'cache_expiration_time' => 60 * 24,
-    
+        /*
+         * Change this if you want to name the related model primary key other than
+         * `model_id`.
+         *
+         * For example, this would be nice if your primary keys are all UUIDs. In
+         * that case, name this `model_uuid`.
+         */
+        'model_morph_key' => 'model_id',
+    ],
+
     /*
      * When set to true, the required permission/role names are added to the exception
      * message. This could be considered an information leak in some contexts, so
@@ -191,6 +195,41 @@ return [
      */
 
     'display_permission_in_exception' => false,
+
+    'cache' => [
+
+        /*
+         * By default all permissions are cached for 24 hours to speed up performance.
+         * When permissions or roles are updated the cache is flushed automatically.
+         */
+
+        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+
+        /*
+         * The cache key used to store all permissions.
+         */
+
+        'key' => 'spatie.permission.cache',
+
+        /*
+         * When checking for a permission against a model by passing a Permission
+         * instance to the check, this key determines what attribute on the
+         * Permissions model is used to cache against.
+         *
+         * Ideally, this should match your preferred way of checking permissions, eg:
+         * `$user->can('view-posts')` would be 'name'.
+         */
+
+        'model_key' => 'name',
+
+        /*
+         * You may optionally indicate a specific cache driver to use for permission and
+         * role caching using any of the `store` drivers listed in the cache.php config
+         * file. Using 'default' here means to use the `default` set in cache.php.
+         */
+
+        'store' => 'default',
+    ],
 ];
 ```
 
@@ -205,6 +244,7 @@ composer require spatie/laravel-permission
 Copy the required files:
 
 ```bash
+mkdir -p config
 cp vendor/spatie/laravel-permission/config/permission.php config/permission.php
 cp vendor/spatie/laravel-permission/database/migrations/create_permission_tables.php.stub database/migrations/2018_01_01_000000_create_permission_tables.php
 ```
@@ -212,7 +252,7 @@ cp vendor/spatie/laravel-permission/database/migrations/create_permission_tables
 You will also need to create another configuration file at `config/auth.php`. Get it on the Laravel repository or just run the following command:
 
 ```bash
-curl -Ls https://raw.githubusercontent.com/laravel/lumen-framework/5.5/config/auth.php -o config/auth.php
+curl -Ls https://raw.githubusercontent.com/laravel/lumen-framework/5.7/config/auth.php -o config/auth.php
 ```
 
 Then, in `bootstrap/app.php`, register the middlewares:
@@ -225,10 +265,11 @@ $app->routeMiddleware([
 ]);
 ```
 
-As well as the configuration and the service provider:
+As well as the config file, service provider, and cache alias:
 
 ```php
 $app->configure('permission');
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
 ```
 
@@ -309,12 +350,15 @@ The `HasRoles` trait adds Eloquent relationships to your models, which can be ac
 
 ```php
 // get a list of all permissions directly assigned to the user
-$permissions = $user->permissions;
+$permissionNames = $user->getPermissionNames(); // collection of name strings
+$permissions = $user->permissions; // collection of permission objects
 
-// get all permissions inherited via the user's roles
+// get all permissions for the user, either directly, or from roles, or from both
+$permissions = $user->getDirectPermissions();
 $permissions = $user->getPermissionsViaRoles();
+$permissions = $user->getAllPermissions();
 
-// get a collection of all defined roles
+// get the names of the user's roles
 $roles = $user->getRoleNames(); // Returns a collection
 ```
 
@@ -360,7 +404,7 @@ Or revoke & add new permissions in one go:
 $user->syncPermissions(['edit articles', 'delete articles']);
 ```
 
-You can test if a user has a permission:
+You can check if a user has a permission:
 
 ```php
 $user->hasPermissionTo('edit articles');
@@ -374,7 +418,7 @@ $user->hasPermissionTo(Permission::find(1)->id);
 $user->hasPermissionTo($somePermission->id);
 ```
 
-You can test if a user has Any of an array of permissions:
+You can check if a user has Any of an array of permissions:
 
 ```php
 $user->hasAnyPermission(['edit articles', 'publish articles', 'unpublish articles']);
@@ -393,7 +437,7 @@ $user->hasAnyPermission(['edit articles', 1, 5]);
 ```
 
 Saved permissions will be registered with the `Illuminate\Auth\Access\Gate` class for the default guard. So you can
-test if a user has a permission with Laravel's default `can` function:
+check if a user has a permission with Laravel's default `can` function:
 
 ```php
 $user->can('edit articles');
@@ -512,7 +556,7 @@ This package also adds Blade directives to verify whether the currently logged i
 Optionally you can pass in the `guard` that the check will be performed on as a second argument.
 
 #### Blade and Roles
-Test for a specific role:
+Check for a specific role:
 ```php
 @role('writer')
     I am a writer!
@@ -529,7 +573,7 @@ is the same as
 @endhasrole
 ```
 
-Test for any role in a list:
+Check for any role in a list:
 ```php
 @hasanyrole($collectionOfRoles)
     I have one or more of these roles!
@@ -543,7 +587,7 @@ Test for any role in a list:
     I have none of these roles...
 @endhasanyrole
 ```
-Test for all roles:
+Check for all roles:
 
 ```php
 @hasallroles($collectionOfRoles)
@@ -557,6 +601,16 @@ Test for all roles:
 @else
     I do not have all of these roles...
 @endhasallroles
+```
+
+Alternatively, `@unlessrole` gives the reverse for checking a singular role, like this:
+
+```php
+@unlessrole('does not have this role')
+    I do not have the role
+@else
+    I do have the role
+@endunlessrole
 ```
 
 #### Blade and Permissions
@@ -573,6 +627,25 @@ or
   //
 @endif
 ```
+
+## Defining a Super-Admin
+
+We strongly recommend that a Super-Admin be handled by setting a global `Gate::before` rule which checks for the desired role. 
+
+Then you can implement the best-practice of primarily using permission-based controls throughout your app, without always having to check for "is this a super-admin" everywhere.
+
+See this wiki article on [Defining a Super-Admin Gate rule](https://github.com/spatie/laravel-permission/wiki/Global-%22Admin%22-role) in your app.
+
+## Best Practices -- roles vs permissions
+
+It is generally best to code your app around `permissions` only. That way you can always use the native Laravel `@can` and `can()` directives everywhere in your app.
+
+Roles can still be used to group permissions for easy assignment, and you can still use the role-based helper methods if truly necessary. But most app-related logic can usually be best controlled using the `can` methods, which allows Laravel's Gate layer to do all the heavy lifting.
+
+## Best Practices -- Using Policies
+
+The best way to incorporate access control for access to app features is with Model Policies. This way your application logic can be combined with your permission rules, keeping your implementation simpler. You can find an example of implementing a model policy with this Laravel Permissions package in this demo app: https://github.com/drbyte/spatie-permissions-demo/blob/master/app/Policies/PostPolicy.php
+
 
 ## Using multiple guards
 
@@ -603,6 +676,10 @@ $user->hasPermissionTo('publish articles', 'admin');
 
 > **Note**: When determining whether a role/permission is valid on a given model, it chooses the guard in this order: first the `$guard_name` property of the model; then the guard in the config (through a provider); then the first-defined guard in the `auth.guards` config array; then the `auth.defaults.guard` config.
 
+> **Note**: When using other than the default `web` guard, you will need to declare which `guard_name` you wish each model to use by setting the `$guard_name` property in your model. One per model is simplest. 
+
+> **Note**: If your app uses only a single guard, but is not `web` then change the order of your listed guards in your `config/auth.php` to list your primary guard as the default and as the first in the list of defined guards.
+
 ### Assigning permissions and roles to guard users
 
 You can use the same methods to assign permissions and roles to users as described above in [using permissions via roles](#using-permissions-via-roles). Just make sure the `guard_name` on the permission or role matches the guard of the user, otherwise a `GuardDoesNotMatch` exception will be thrown.
@@ -621,13 +698,14 @@ You can use all of the blade directives listed in [using blade directives](#usin
 
 ## Using a middleware
 
-This package comes with `RoleMiddleware` and `PermissionMiddleware` middleware. You can add them inside your `app/Http/Kernel.php` file.
+This package comes with `RoleMiddleware`, `PermissionMiddleware` and `RoleOrPermissionMiddleware` middleware. You can add them inside your `app/Http/Kernel.php` file.
 
 ```php
 protected $routeMiddleware = [
     // ...
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 ];
 ```
 
@@ -645,6 +723,14 @@ Route::group(['middleware' => ['permission:publish articles']], function () {
 Route::group(['middleware' => ['role:super-admin','permission:publish articles']], function () {
     //
 });
+
+Route::group(['middleware' => ['role_or_permission:super-admin']], function () {
+    //
+});
+
+Route::group(['middleware' => ['role_or_permission:publish articles']], function () {
+    //
+});
 ```
 
 Alternatively, you can separate multiple roles or permission with a `|` (pipe) character:
@@ -657,6 +743,10 @@ Route::group(['middleware' => ['role:super-admin|writer']], function () {
 Route::group(['middleware' => ['permission:publish articles|edit articles']], function () {
     //
 });
+
+Route::group(['middleware' => ['role_or_permission:super-admin|edit articles']], function () {
+    //
+});
 ```
 
 You can protect your controllers similarly, by setting desired middleware in the constructor:
@@ -665,6 +755,13 @@ You can protect your controllers similarly, by setting desired middleware in the
 public function __construct()
 {
     $this->middleware(['role:super-admin','permission:publish articles|edit articles']);
+}
+```
+
+```php
+public function __construct()
+{
+    $this->middleware(['role_or_permission:super-admin|edit articles']);
 }
 ```
 
@@ -680,7 +777,6 @@ public function render($request, Exception $exception)
 
     return parent::render($request, $exception);
 }
-
 ```
 
 ## Using artisan commands
@@ -695,7 +791,7 @@ php artisan permission:create-role writer
 php artisan permission:create-permission "edit articles"
 ```
 
-When creating permissions and roles for specific guards you can specify the guard names as a second argument:
+When creating permissions/roles for specific guards you can specify the guard names as a second argument:
 
 ```bash
 php artisan permission:create-role writer web
@@ -704,6 +800,13 @@ php artisan permission:create-role writer web
 ```bash
 php artisan permission:create-permission "edit articles" web
 ```
+
+When creating roles you can also create and link permissions at the same time:
+
+```bash
+php artisan permission:create-role writer web "create articles|edit articles"
+```
+
 
 ## Unit Testing
 
@@ -722,43 +825,41 @@ In your application's tests, if you are not seeding roles and permissions as par
 
 ## Database Seeding
 
-Two notes about Database Seeding:
+You may discover that it is best to flush this package's cache before seeding, to avoid cache conflict errors. This can be done directly in a seeder class. Here is a sample seeder, which first clears the cache, creates permissions and then assigns permissions to roles (the order of these steps is intentional):
 
-1. It is best to flush the `spatie.permission.cache` before seeding, to avoid cache conflict errors. This can be done from an Artisan command (see Troubleshooting: Cache section, later) or directly in a seeder class (see example below).
+```php
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-2. Here's a sample seeder, which clears the cache, creates permissions and then assigns permissions to roles:
-
-    ```php
-    use Illuminate\Database\Seeder;
-    use Spatie\Permission\Models\Role;
-    use Spatie\Permission\Models\Permission;
-
-    class RolesAndPermissionsSeeder extends Seeder
+class RolesAndPermissionsSeeder extends Seeder
+{
+    public function run()
     {
-        public function run()
-        {
-            // Reset cached roles and permissions
-            app()['cache']->forget('spatie.permission.cache');
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-            // create permissions
-            Permission::create(['name' => 'edit articles']);
-            Permission::create(['name' => 'delete articles']);
-            Permission::create(['name' => 'publish articles']);
-            Permission::create(['name' => 'unpublish articles']);
+        // create permissions
+        Permission::create(['name' => 'edit articles']);
+        Permission::create(['name' => 'delete articles']);
+        Permission::create(['name' => 'publish articles']);
+        Permission::create(['name' => 'unpublish articles']);
 
-            // create roles and assign created permissions
+        // create roles and assign created permissions
 
-            $role = Role::create(['name' => 'writer']);
-            $role->givePermissionTo('edit articles');
+        // this can be done as separate statements
+        $role = Role::create(['name' => 'writer']);
+        $role->givePermissionTo('edit articles');
 
-            $role = Role::create(['name' => 'moderator']);
-            $role->givePermissionTo(['publish articles', 'unpublish articles']);
+        // or may be done by chaining
+        $role = Role::create(['name' => 'moderator'])
+            ->givePermissionTo(['publish articles', 'unpublish articles']);
 
-            $role = Role::create(['name' => 'super-admin']);
-            $role->givePermissionTo(Permission::all());
-        }
+        $role = Role::create(['name' => 'super-admin']);
+        $role->givePermissionTo(Permission::all());
     }
-	```
+}
+```
 
 ## Extending
 
@@ -784,7 +885,9 @@ php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvid
 
 Role and Permission data are cached to speed up performance.
 
-When you use the supplied methods for manipulating roles and permissions, the cache is automatically reset for you:
+While we recommend not changing the cache "key" name, if you wish to alter the expiration time you may do so in the `config/permission.php` file, in the `cache` array. Note that as of v2.26.0 the `cache` entry here is now an array, and `expiration_time` is a sub-array entry.
+
+When you use the built-in functions for manipulating roles and permissions, the cache is automatically reset for you, and relations are automatically reloaded for the current model record:
 
 ```php
 $user->assignRole('writer');
@@ -801,28 +904,47 @@ $permission->syncRoles(params);
 HOWEVER, if you manipulate permission/role data directly in the database instead of calling the supplied methods, then you will not see the changes reflected in the application unless you manually reset the cache.
 
 ### Manual cache reset
-To manually reset the cache for this package, run:
-```bash
-php artisan cache:forget spatie.permission.cache
+To manually reset the cache for this package, you can run the following in your app code:
+```php
+app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 ```
+
+Or you can use an Artisan command:
+```bash
+php artisan permission:cache-reset
+```
+
 
 ### Cache Identifier
 
 TIP: If you are leveraging a caching service such as `redis` or `memcached` and there are other sites 
-running on your server, you could run into cache clashes. It is prudent to set your own cache `prefix` 
-in `/config/cache.php` to something unique for each application. This will prevent other applications 
-from accidentally using/changing your cached data.
+running on your server, you could run into cache clashes between apps. It is prudent to set your own 
+cache `prefix` in Laravel's `/config/cache.php` to something unique for each application. 
+This will prevent other applications from accidentally using/changing your cached data.
 
 
 ## Need a UI?
 
-The package doesn't come with any screens out of the box, you should build that yourself. To get started check out [this extensive tutorial](https://scotch.io/tutorials/user-authorization-in-laravel-54-with-spatie-laravel-permission) by [Caleb Oki](http://www.caleboki.com/).
+The package doesn't come with any screens out of the box, you should build that yourself. Here are some options to get you started:
+
+- [Laravel Nova package by @vyuldashev for managing Roles and Permissions](https://github.com/vyuldashev/nova-permission)
+
+- [Laravel Nova package by @paras-malhotra for managing Roles and Permissions and permissions based authorization for Nova Resources](https://github.com/insenseanalytics/laravel-nova-permission)
+
+- [Extensive tutorial for building permissions UI](https://scotch.io/tutorials/user-authorization-in-laravel-54-with-spatie-laravel-permission) by [Caleb Oki](http://www.caleboki.com/).
+
+- [How to create a UI for managing the permissions and roles](http://www.qcode.in/easy-roles-and-permissions-in-laravel-5-4/)
+
 
 ### Testing
 
 ``` bash
 composer test
 ```
+
+### Upgrading
+If you're upgrading from v1 to v2, @fabricecw prepared [a gist which may make your data migration easier](https://gist.github.com/fabricecw/58ee93dd4f99e78724d8acbb851658a4).
+You will also need to remove your old `laravel-permission.php` config file and publish the new one `permission.php`, and edit accordingly.
 
 ### Changelog
 
@@ -855,13 +977,10 @@ can be found [in this repo on GitHub](https://github.com/laracasts/laravel-5-rol
 
 Special thanks to [Alex Vanderbist](https://github.com/AlexVanderbist) who greatly helped with `v2`, and to [Chris Brown](https://github.com/drbyte) for his longtime support  helping us maintain the package.
 
-## Resources
-
-- [How to create a UI for managing the permissions and roles](http://www.qcode.in/easy-roles-and-permissions-in-laravel-5-4/)
-
 ## Alternatives
 
-[Povilas Korop](https://twitter.com/@povilaskorop) did an excellent job listing the alternatives [in an article on Laravel News](https://laravel-news.com/two-best-roles-permissions-packages). In that same article, he compares laravel-permission to [Joseph Silber](https://github.com/JosephSilber)'s [Bouncer]((https://github.com/JosephSilber/bouncer)), which in our book is also an excellent package.
+- [Povilas Korop](https://twitter.com/@povilaskorop) did an excellent job listing the alternatives [in an article on Laravel News](https://laravel-news.com/two-best-roles-permissions-packages). In that same article, he compares laravel-permission to [Joseph Silber](https://github.com/JosephSilber)'s [Bouncer]((https://github.com/JosephSilber/bouncer)), which in our book is also an excellent package.
+- [ultraware/roles](https://github.com/ultraware/roles) takes a slightly different approach to its features.
 
 ## Support us
 

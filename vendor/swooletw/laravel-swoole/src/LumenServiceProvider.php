@@ -3,7 +3,11 @@
 namespace SwooleTW\Http;
 
 use SwooleTW\Http\Server\Manager;
+use SwooleTW\Http\Middleware\AccessLog;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LumenServiceProvider extends HttpServiceProvider
 {
     /**
@@ -13,28 +17,33 @@ class LumenServiceProvider extends HttpServiceProvider
      */
     protected function registerManager()
     {
-        $this->app->singleton('swoole.http', function ($app) {
+        $this->app->singleton(Manager::class, function ($app) {
             return new Manager($app, 'lumen');
         });
+
+        $this->app->alias(Manager::class, 'swoole.manager');
     }
 
     /**
-     * Boot routes.
+     * Boot websocket routes.
      *
      * @return void
      */
-    protected function bootRoutes()
+    protected function bootWebsocketRoutes()
     {
-        $app = $this->app;
+        $this->app->router
+            ->group(['namespace' => 'SwooleTW\Http\Controllers'], function ($router) {
+                require __DIR__ . '/../routes/lumen_routes.php';
+            });
+    }
 
-        if (property_exists($app, 'router')) {
-            $app->router->group(['namespace' => 'SwooleTW\Http\Controllers'], function ($app) {
-                require __DIR__ . '/../routes/lumen_routes.php';
-            });
-        } else {
-            $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-                require __DIR__ . '/../routes/lumen_routes.php';
-            });
-        }
+    /**
+     * Register access log middleware to container.
+     *
+     * @return void
+     */
+    protected function pushAccessLogMiddleware()
+    {
+        $this->app->middleware(AccessLog::class);
     }
 }

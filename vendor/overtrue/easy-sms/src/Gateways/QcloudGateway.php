@@ -45,23 +45,34 @@ class QcloudGateway extends Gateway
      */
     public function send(PhoneNumberInterface $to, MessageInterface $message, Config $config)
     {
-        $type = !empty($message->getData($this)['type']) ? $message->getData($this)['type'] : 0;
+        $data = $message->getData($this);
+
+        $signName = !empty($data['sign_name']) ? $data['sign_name'] : $config->get('sign_name', '');
+
+        unset($data['sign_name']);
+
+        $msg = $message->getContent($this);
+        if (!empty($msg) && '【' != mb_substr($msg, 0, 1) && !empty($signName)) {
+            $msg = '【'.$signName.'】'.$msg;
+        }
+
+        $type = !empty($data['type']) ? $data['type'] : 0;
         $params = [
             'tel' => [
                 'nationcode' => $to->getIDDCode() ?: 86,
                 'mobile' => $to->getNumber(),
             ],
             'type' => $type,
-            'msg' => $message->getContent($this),
+            'msg' => $msg,
             'time' => time(),
             'extend' => '',
             'ext' => '',
         ];
-        if (!is_null($message->getTemplate($this)) && is_array($message->getData($this))) {
+        if (!is_null($message->getTemplate($this)) && is_array($data)) {
             unset($params['msg']);
-            $params['params'] = array_values($message->getData($this));
+            $params['params'] = array_values($data);
             $params['tpl_id'] = $message->getTemplate($this);
-            $params['sign'] = $config->get('sign_name');
+            $params['sign'] = $signName;
         }
         $random = substr(uniqid(), -10);
 

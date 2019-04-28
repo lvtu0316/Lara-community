@@ -31,6 +31,7 @@ return [
     'boolean'              => ' :attribute doğru və ya yanlış ola bilər',
     'confirmed'            => ' :attribute doğrulanması yanlışdır',
     'date'                 => ' :attribute tarix formatında olmalıdır',
+    'date_equals'          => 'The :attribute must be a date equal to :date.',
     'date_format'          => ' :attribute :format formatında olmalıdır',
     'different'            => ' :attribute və :other fərqli olmalıdır',
     'digits'               => ' :attribute :digits rəqəmli olmalıdır',
@@ -88,6 +89,7 @@ return [
         'array'   => ' :attribute minimum :min hədd\'dən ibarət ola bilər',
     ],
     'not_in'               => ' seçilmiş :attribute yanlışdır',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ' :attribute rəqəmlərdən ibarət olmalıdır',
     'present'              => ' :attribute iştirak etməlidir',
     'regex'                => ' :attribute formatı yanlışdır',
@@ -105,11 +107,13 @@ return [
         'string'  => ' :attribute :size simvoldan ibarət olmalıdır',
         'array'   => ' :attribute :size hədd\'dən ibarət olmalıdır',
     ],
+    'starts_with'          => 'The :attribute must start with one of the following: :values',
     'string'               => ' :attribute hərf formatında olmalıdır',
     'timezone'             => ' :attribute ərazi formatında olmalıdır',
     'unique'               => ' :attribute artıq iştirak edib',
     'uploaded'             => ' :attribute yüklənməsi mümkün olmadı',
     'url'                  => ' :attribute formatı yanlışdır',
+    'uuid'                 => 'The :attribute must be a valid UUID.',
 
     /*
     |--------------------------------------------------------------------------

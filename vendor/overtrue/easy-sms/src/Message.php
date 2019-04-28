@@ -80,7 +80,7 @@ class Message implements MessageInterface
      */
     public function getContent(GatewayInterface $gateway = null)
     {
-        return $this->content;
+        return is_callable($this->content) ? call_user_func($this->content, $gateway) : $this->content;
     }
 
     /**
@@ -92,7 +92,7 @@ class Message implements MessageInterface
      */
     public function getTemplate(GatewayInterface $gateway = null)
     {
-        return $this->template;
+        return is_callable($this->template) ? call_user_func($this->template, $gateway) : $this->template;
     }
 
     /**
@@ -138,7 +138,7 @@ class Message implements MessageInterface
      */
     public function getData(GatewayInterface $gateway = null)
     {
-        return $this->data;
+        return is_callable($this->data) ? call_user_func($this->data, $gateway) : $this->data;
     }
 
     /**

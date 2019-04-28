@@ -31,6 +31,7 @@ return [
     'boolean'              => 'Il campo :attribute deve essere vero o falso.',
     'confirmed'            => 'Il campo di conferma per :attribute non coincide.',
     'date'                 => ':attribute non è una data valida.',
+    'date_equals'          => ':attribute deve essere una data e uguale a :date.',
     'date_format'          => ':attribute non coincide con il formato :format.',
     'different'            => ':attribute e :other devono essere differenti.',
     'digits'               => ':attribute deve essere di :digits cifre.',
@@ -96,7 +97,7 @@ return [
     'required_if'          => 'Il campo :attribute è richiesto quando :other è :value.',
     'required_unless'      => 'Il campo :attribute è richiesto a meno che :other sia in :values.',
     'required_with'        => 'Il campo :attribute è richiesto quando :values è presente.',
-    'required_with_all'    => 'Il campo :attribute è richiesto quando :values è presente.',
+    'required_with_all'    => 'Il campo :attribute è richiesto quando :values sono presenti.',
     'required_without'     => 'Il campo :attribute è richiesto quando :values non è presente.',
     'required_without_all' => 'Il campo :attribute è richiesto quando nessuno di :values è presente.',
     'same'                 => ':attribute e :other devono coincidere.',
@@ -106,11 +107,13 @@ return [
         'string'  => ':attribute deve contenere :size caratteri.',
         'array'   => ':attribute deve contenere :size elementi.',
     ],
+    'starts_with'          => ':attribute deve iniziare con uno dei seguenti: :values',
     'string'               => ':attribute deve essere una stringa.',
     'timezone'             => ':attribute deve essere una zona valida.',
     'unique'               => ':attribute è stato già utilizzato.',
     'uploaded'             => ':attribute non è stato caricato.',
     'url'                  => 'Il formato del campo :attribute non è valido.',
+    'uuid'                 => ':attribute deve essere un UUID valido.',
 
     /*
     |--------------------------------------------------------------------------

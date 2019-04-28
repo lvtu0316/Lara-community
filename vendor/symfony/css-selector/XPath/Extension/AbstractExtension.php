@@ -18,6 +18,8 @@ namespace Symfony\Component\CssSelector\XPath\Extension;
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
+ *
+ * @internal
  */
 abstract class AbstractExtension implements ExtensionInterface
 {
@@ -26,7 +28,7 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getNodeTranslators()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -34,7 +36,7 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getCombinationTranslators()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -42,7 +44,7 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getFunctionTranslators()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -50,7 +52,7 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getPseudoClassTranslators()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -58,6 +60,6 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getAttributeMatchingTranslators()
     {
-        return array();
+        return [];
     }
 }

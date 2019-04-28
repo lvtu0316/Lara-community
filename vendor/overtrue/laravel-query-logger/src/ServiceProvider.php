@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the overtrue/package-builder.
+ * This file is part of the overtrue/laravel-query-logger.
  *
  * (c) overtrue <i@overtrue.me>
  *
@@ -23,7 +23,10 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {
-        Log::info('============ URL: '.request()->fullUrl().' ===============');
+        if (!$this->app['config']->get('app.debug')) {
+            return;
+        }
+
         DB::listen(function (QueryExecuted $query) {
             $sqlWithPlaceholders = str_replace(['%', '?'], ['%%', '%s'], $query->sql);
 
@@ -32,7 +35,7 @@ class ServiceProvider extends LaravelServiceProvider
             $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
             $duration = $this->formatDuration($query->time / 1000);
 
-            Log::debug(sprintf('[%s] %s', $duration, $realSql));
+            Log::debug(sprintf('[%s] %s | %s: %s', $duration, $realSql, request()->method(), request()->getRequestUri()));
         });
     }
 
@@ -53,11 +56,11 @@ class ServiceProvider extends LaravelServiceProvider
     private function formatDuration($seconds)
     {
         if ($seconds < 0.001) {
-            return round($seconds * 1000000) . 'μs';
+            return round($seconds * 1000000).'μs';
         } elseif ($seconds < 1) {
-            return round($seconds * 1000, 2) . 'ms';
+            return round($seconds * 1000, 2).'ms';
         }
 
-        return round($seconds, 2) . 's';
+        return round($seconds, 2).'s';
     }
 }
