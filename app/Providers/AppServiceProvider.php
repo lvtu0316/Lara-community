@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Libraries\EsEngine;
 use Laravel\Scout\EngineManager;
 use Elasticsearch\ClientBuilder as ElasticBuilder;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
 		\App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
         \App\Models\Link::observe(\App\Observers\LinkObserver::class);
+		Schema::defaultStringLength(191);
 
         \Carbon\Carbon::setLocale('zh');
 

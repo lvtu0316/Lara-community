@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="http://bbs.test/vendor/sitemap/styles/sitemapindex.xsl" type="text/xsl"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<sitemap>
+		<loc>http://bbs.test/storage/sitemap/articles-2019-04.xml</loc>
+			<lastmod>2019-04-28T10:47:02+08:00</lastmod>
+		</sitemap>
+	<sitemap>
+		<loc>http://bbs.test/storage/sitemap/articles-2019-03.xml</loc>
+			<lastmod>2019-04-26T10:38:34+08:00</lastmod>
+		</sitemap>
+	<sitemap>
+		<loc>http://bbs.test/storage/sitemap/home.xml</loc>
+			<lastmod>2019-04-28T17:19:20+08:00</lastmod>
+		</sitemap>
+</sitemapindex>

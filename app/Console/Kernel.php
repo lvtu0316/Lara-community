@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\ESInit::class
+        \App\Console\Commands\ESInit::class,
+        \App\Console\Commands\GenerateSitemapCommand::class,
     ];
 
     /**
