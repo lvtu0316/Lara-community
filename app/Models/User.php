@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject, LikerContract
 
     use PresentableTrait;
     protected $presenter = 'App\Presenters\UserPresenter';
-    use Searchable;
+//    use Searchable;
 
     public function searchableAs()
     {
@@ -47,7 +47,7 @@ class User extends Authenticatable implements JWTSubject, LikerContract
      */
     protected $fillable = [
         'name', 'email', 'password','introduction','avatar','weixin_openid', 'weixin_unionid','phone','registration_id',
-        'weixin_session_key', 'weapp_openid'
+        'weixin_session_key', 'weapp_openid', 'activated'
     ];
 
     /**
@@ -124,6 +124,15 @@ class User extends Authenticatable implements JWTSubject, LikerContract
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->activation_token = str_random(30);
+        });
     }
 
 
